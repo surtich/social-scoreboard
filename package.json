@@ -1,0 +1,22 @@
+{
+  "name": "social-scoreboard",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:IGZJavierPerez/social-scoreboard.git"
+  },
+  "author": "IGZJavierPerez <surtich@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IGZJavierPerez/social-scoreboard/issues"
+  },
+  "homepage": "https://github.com/IGZJavierPerez/social-scoreboard",
+  "devDependencies": {
+    "cucumber": "^0.4.2"
+  }
+}

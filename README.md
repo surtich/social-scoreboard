@@ -15,5 +15,5 @@ npm install
 To test with Cucumber:
 
 ```bash
-npm test
+grunt
 ```

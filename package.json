@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/IGZJavierPerez/social-scoreboard",
   "devDependencies": {
-    "cucumber": "^0.4.2"
+    "cucumber": "^0.4.2",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-cucumberjs": "^0.4.1"
   }
 }

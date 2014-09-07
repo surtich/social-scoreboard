@@ -1,5 +1,3 @@
-'use strict';
-
 function Score() {
   var _score = {
     home: 0,

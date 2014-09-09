@@ -1,2 +1,2 @@
 echo "**************************** Installing bower dependencies  ****************************"
-$OPENSHIFT_DATA_DIR/node_modules/.bin/bower install
+$OPENSHIFT_DATA_DIR/repo/node_modules/.bin/bower install

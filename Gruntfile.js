@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 			'client-dev': {
 				options: {
 					port: process.env.OPENSHIFT_NODEJS_PORT || 9001,
-					hostname: process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
+					hostname: process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
 					base: 'client',
 					keepalive: true
 				}
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
 			'client-dist': {
 				options: {
 					port: process.env.OPENSHIFT_NODEJS_PORT || 9002,
-					hostname: process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
+					hostname: process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
 					base: 'client/dist',
 					keepalive: true
 				}

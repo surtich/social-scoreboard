@@ -6,15 +6,15 @@
 	}
 
 	function isInteger(x) {
-		return (typeof x === 'number') && (x % 1 === 0);
+		return Number(x) === parseInt(x, 10);
 	}
 
 	Polymer({
 		handleSetPoint: function(event, detail, sender) {
-			var points = Number(sender.value);
+			var points = sender.value;
 			if (checkValidScore(points)) {
 				this.fire('score-setted', {
-					points: points
+					points: Number(points)
 				});
 			}
 			sender.value = '';

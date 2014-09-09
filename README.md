@@ -35,5 +35,19 @@ To start Web server
 grunt client-dev-run
 ```
 
+deploy to OpenShift
+===================
 
+To merge ([see this](http://stackoverflow.com/questions/12657168/can-i-use-my-existing-git-repo-with-openshift)):
 
+```bash
+git clone <GitHub-repo-url>
+git remote add openshift -f <openshift-git-repo-url>
+```
+
+To merge:
+
+```bash
+git merge openshift/master -s recursive -X ours
+git push openshift HEAD
+```

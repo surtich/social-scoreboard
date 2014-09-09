@@ -11,9 +11,29 @@ To install:
 npm install
 ```
 
+server
+======
 
 To test with Cucumber:
 
 ```bash
 grunt
 ```
+
+client
+======
+
+To install:
+
+```bash
+bower install
+```
+
+To start Web server
+
+```bash
+grunt client-dev-run
+```
+
+
+

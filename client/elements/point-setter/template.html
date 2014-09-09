@@ -1,0 +1,10 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<polymer-element name="point-setter" attributes="teamName">
+  <template>
+    <link rel="stylesheet" href="style.css">
+		<div>
+			<input type="text" id="text" placeholder="set {{teamName}} score" on-keypress="{{keypressAction}}" on-blur="{{handleSetPoint}}">
+		</div>
+  </template>
+  <script src="presenter.js"></script>
+</polymer-element>

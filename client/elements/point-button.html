@@ -1,0 +1,36 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<polymer-element name="point-button" attributes="points">
+  <template>
+    <style>
+			:host {
+				margin-left: 5px;
+			}
+			#button {
+				background: #4285f4;
+				color: #fff;
+				letter-spacing: 1px;
+			}
+
+			#button:hover {
+				background: #2a56c6;
+			}
+
+			#button::shadow #ripple {
+				color: #fff;
+			}
+    </style>
+		<div>
+			<paper-button on-tap="{{buttonTap}}" id="button" label="{{points}}" raisedButton></paper-button>
+		</div>
+    
+  </template>
+  <script>
+		Polymer({
+			buttonTap: function(event, detail, sender) {
+				this.fire('basket-scored', {points: parseInt(this.points, 10)});
+			}
+		});
+  </script>
+</polymer-element>

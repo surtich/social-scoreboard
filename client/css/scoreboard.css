@@ -1,0 +1,27 @@
+.scoreboard {
+	font-family: 'LED', serif;
+	font-size: 2em;
+	background-color: black;
+	text-align: center;
+}
+
+.scoreboard .team_score {
+	color: yellow;
+}
+
+.scoreboard .team_name {
+	color: white;
+}
+
+.scoreboard-controls .btn {
+	font-weight: bold;
+	color: #eee;
+}
+
+.scoreboard-controls div {
+	padding: 5px;
+}
+
+.scoreboard-controls input[type="text"] {
+	font-size: 0.40em;
+}

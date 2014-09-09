@@ -1,0 +1,33 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="score-team.html">
+<link rel="import" href="score-board-model.html">
+
+<polymer-element name="score-board-view">
+  <template>
+    <style>
+			:host {
+				display: block;
+				position: relative;
+				background-color: black;
+				padding: 20px;
+				width: 100%;
+				font-size: 2em;
+				font-family: LED;
+				font-weight: 300;
+				border-radius: 5px;
+			}
+    </style>
+		<div layout horizontal around-justified>
+			<score-board-model id="scoreModel"></score-board-model>
+			<score-team teamName="home" teamScore="{{model.home}}"></score-team>
+			<score-team teamName="guest" teamScore="{{model.guest}}"></score-team>
+		</div>
+  </template>
+  <script>
+		Polymer({
+			ready: function() {
+				this.model = this.$.scoreModel.score;
+			}
+		});
+  </script>
+</polymer-element>

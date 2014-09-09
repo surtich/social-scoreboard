@@ -1,0 +1,36 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="score-controls.html">
+
+<polymer-element name="score-team" attributes="teamName teamScore">
+  <template>
+    <style>
+			.team-name {
+				color: white;
+			}
+			.team-score {
+				color: yellow;
+				font-size: 3em;
+			}
+
+    </style>
+    <div layout vertical center on-basket-scored="{{handleBasket}}" on-score-setted="{{handleScoreSetted}}">
+			<div class="team-name">
+				{{teamName}}
+			</div>
+			<div class="team-score">
+				{{teamScore}}
+			</div>
+			<score-controls teamName="{{teamName}}"></score-controls>
+    </div>
+  </template>
+  <script>
+		Polymer({
+			handleBasket: function(event, detail, sender) {
+				this.teamScore += detail.points;
+			},
+			handleScoreSetted: function(event, detail, sender) {
+				this.teamScore = detail.points;
+			}
+		});
+  </script>
+</polymer-element>

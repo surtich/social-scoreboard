@@ -1,0 +1,23 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="point-button.html">
+<link rel="import" href="point-setter/template.html">
+
+<polymer-element name="score-controls" attributes="teamName">
+  <template>
+    <style>
+			:host {
+				font-size: 0.35em;
+				font-weight: bold;
+			}
+    </style>
+    <div layout horizontal center>
+			<point-button points="+1"></point-button>
+			<point-button points="+2"></point-button>
+			<point-button points="+3"></point-button>
+			<point-setter teamName="{{teamName}}"></point-setter>
+    </div>
+  </template>
+  <script>
+		Polymer({});
+  </script>
+</polymer-element>

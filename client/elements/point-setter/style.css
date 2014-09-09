@@ -1,0 +1,13 @@
+:host {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+#text {
+	background-color: white;
+	color: black;
+	max-width: 100px;
+	min-height: 18px;
+	border-radius: 3px;
+	text-align: center;
+	font-family: LED, serif;
+}

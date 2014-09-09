@@ -1,2 +1,4 @@
 /node_modules
 /nbproject/
+/client/bower_components
+/client/dist

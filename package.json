@@ -2,10 +2,9 @@
   "name": "social-scoreboard",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "cucumber.js",
-    "start": "echo hola"
+    "start": "echo Deploying......."
   },
   "repository": {
     "type": "git",

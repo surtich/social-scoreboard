@@ -1,28 +1,35 @@
 {
-  "name": "social-scoreboard",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "cucumber.js"
+  "name": "OpenShift-Sample-App",
+  "version": "1.0.0",
+  "description": "OpenShift Sample Application",
+  "keywords": [
+    "OpenShift",
+    "Node.js",
+    "application",
+    "openshift"
+  ],
+  "author": {
+    "name": "OpenShift",
+    "email": "ramr@example.org",
+    "url": "http://www.openshift.com/"
   },
+  "homepage": "http://www.openshift.com/",
   "repository": {
     "type": "git",
-    "url": "git@github.com:IGZJavierPerez/social-scoreboard.git"
+    "url": "https://github.com/openshift/origin-server"
   },
-  "author": "IGZJavierPerez <surtich@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/IGZJavierPerez/social-scoreboard/issues"
+
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
   },
-  "homepage": "https://github.com/IGZJavierPerez/social-scoreboard",
-  "devDependencies": {
-    "cucumber": "^0.4.2",
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-cucumberjs": "^0.4.1",
-    "grunt-contrib-connect": "^0.8.0",
-    "grunt-vulcanize": "^0.4.1",
-    "node-fs-extra": "^0.8.1"
-  }
+
+  "dependencies": {
+    "express": "~3.4.4"
+  },
+  "devDependencies": {},
+  "bundleDependencies": [],
+
+  "private": true,
+  "main": "server.js"
 }

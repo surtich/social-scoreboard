@@ -1,1 +1,2 @@
-echo "**************************** Downloading my.zip..."
+echo "**************************** Installing bower dependencies  ****************************"
+./node_modules/.bin/bower install

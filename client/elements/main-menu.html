@@ -1,0 +1,31 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icons/core-icons.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+
+
+<polymer-element name="main-menu">
+  <template>
+    <style>
+			:host {
+				
+			}			
+			#menu	{
+				margin: 10px;
+			}
+    </style>
+		<paper-menu-button id="menu" icon="menu">
+			<paper-item on-click="{{handleCreateScore}}" label="New Score"></paper-item>
+			<paper-item label="Help"></paper-item>
+			<paper-item label="Sign Out"></paper-item>
+		</paper-menu-button>
+  </template>
+  <script>
+		Polymer({
+			handleCreateScore: function() {
+				this.fire('score-create');
+			}
+		});
+  </script>
+</polymer-element>

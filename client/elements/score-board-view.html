@@ -1,8 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="score-team.html">
 <link rel="import" href="score-board-model.html">
 
-<polymer-element name="score-board-view">
+<polymer-element name="score-board-view" attributes="model">
   <template>
     <style>
 			:host {
@@ -16,17 +17,35 @@
 				font-weight: 300;
 				border-radius: 5px;
 			}
+			core-icon-button {
+				position: absolute;
+				top: 3px;
+				right: 3px;
+				color: gray;
+			}
+			core-icon-button:hover {
+				position: absolute;
+				color: red;
+			}
     </style>
+
 		<div layout horizontal around-justified>
-			<score-board-model id="scoreModel"></score-board-model>
+			<!--<score-board-model id="scoreModel"></score-board-model>-->
 			<score-team teamName="home" teamScore="{{model.home}}"></score-team>
 			<score-team teamName="guest" teamScore="{{model.guest}}"></score-team>
 		</div>
+
+    <core-icon-button
+      id="favicon"
+      icon="delete"
+      on-tap="{{handleRemoveScore}}">
+    </core-icon-button>
+
   </template>
   <script>
 		Polymer({
-			ready: function() {
-				this.model = this.$.scoreModel.score;
+			handleRemoveScore: function() {
+				this.fire('score-remove', {score: this.model});
 			}
 		});
   </script>

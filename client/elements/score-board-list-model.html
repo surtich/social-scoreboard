@@ -1,0 +1,20 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="score-board-list-model">
+  <script>
+		Polymer('score-board-list-model', {
+			ready: function() {
+				this.scores = [];
+			},
+			newScore: function() {
+				this.scores.push(document.createElement('score-board-model').score);
+			},
+			destroyScore: function(score) {
+				var i = this.scores.indexOf(score);
+				if (i >= 0) {
+					this.scores.splice(i, 1);
+				}
+			}
+		});
+  </script>
+</polymer-element>

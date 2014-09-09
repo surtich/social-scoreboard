@@ -1,0 +1,88 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="score-board-list-model.html">
+<link rel="import" href="score-board-view.html">
+<link rel="import" href="main-menu.html">
+
+<polymer-element name="main-app">
+	<template>
+		<style>
+			:host {
+
+			}
+			core-header-panel {
+				height: 100%;
+				overflow: auto;
+				-webkit-overflow-scrolling: touch; 
+			}
+
+			core-toolbar {
+				background: #03a9f4;
+				color: white;
+			}
+
+			#tabs {
+				width: 80%;
+				margin: 0;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				text-transform: uppercase;
+			}
+
+			.container {
+				width: 40%;
+				margin: 25px 50px;
+			}
+
+			@media (min-width: 481px) {
+				#tabs {
+					width: 200px;
+				}
+				.container {
+					width: 400px;
+				}
+			}
+		</style>
+		<score-board-list-model id="scoreListModel"></score-board-list-model>
+		<core-header-panel>
+
+			<core-toolbar>
+
+				<paper-tabs id="tabs" selected="scores" self-end>
+					<paper-tab name="scores">Scores</paper-tab>
+					<paper-tab name="favorites">Favorites</paper-tab>
+				</paper-tabs>
+				<div flex>
+				</div>
+				<main-menu on-score-create="{{handleCreateScore}}"></main-menu>
+
+			</core-toolbar>
+
+			<div layout horizontal wrap id="scoreboard-container" on-score-remove="{{handleRemoveScore}}">
+				<template repeat="{{model.scores}}">
+					<div class="container">
+						<score-board-view model="{{}}"></score-board-view>
+					</div>
+				</template>
+			</div>
+		</core-header-panel>
+  </template>
+  <script>
+		Polymer({
+			domReady: function() {
+				this.model = this.$.scoreListModel;
+			},
+			handleCreateScore: function() {
+				this.model.newScore();
+			},
+			handleRemoveScore: function(event, detail) {
+				this.model.destroyScore(detail.score);
+			}
+		});
+  </script>
+</polymer-element>

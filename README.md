@@ -1,7 +1,7 @@
 social-scoreboard
 =================
 
-This application will be used to share the score of a basketball game between several people. 
+This application ([demo](http://socialscoreboard-dawzayas.rhcloud.com/)) will be used to share the score of a basketball game between several people. 
 
 There will be a person attending the match and she will go updating the result for other people who are not there.
 
@@ -49,5 +49,6 @@ git merge openshift/master -s recursive -X ours
 To push changes:
 
 ```bash
+git pull
 git push openshift HEAD
 ```

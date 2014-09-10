@@ -24,25 +24,58 @@
 			#button::shadow {
 				color: #fff;
 			}
-			
+
 			#button[color="red"] {
 				background: #AA0000;
 			}
-			
+
 			#button[color="red"]:hover {
 				background: red;
 			}
     </style>
 		<div>
-			<paper-button on-tap="{{buttonTap}}" id="button" color="{{color}}" label="{{points}}" raisedButton></paper-button>
+			<paper-button on-tap="{{buttonTap}}" on-mousedown="{{startLongPress}}" on-mouseup="{{endLongPress}}" id="button" color="{{color}}" label="{{points}}" raisedButton></paper-button>
 		</div>
 
   </template>
   <script>
-		Polymer({
-			buttonTap: function(event, detail, sender) {
-				this.fire('basket-scored', {points: parseInt(this.points, 10)});
+		(function() {
+			var timer1 = null;
+			var timer2 = null;
+			
+			function fireBasketScore (self) {
+				self.fire('basket-scored', {points: parseInt(self.points, 10)});
 			}
-		});
+			
+			function endTimers() {
+				if (timer1) {
+						clearTimeout(timer1);
+						timer1 = null;
+					}
+					if (timer2) {
+						clearInterval(timer2);
+						timer2 = null;
+					}
+			}
+			
+			Polymer({
+				buttonTap: function(event, detail, sender) {
+					endTimers();
+				},
+				startLongPress: function() {
+					var self = this;
+					fireBasketScore(this);
+					endTimers();
+					timer1 = setTimeout(function() {
+						timer2 = setInterval(function() {
+							fireBasketScore(self);
+						}, 100);
+					}, 400);
+				},
+				endLongPress: function() {
+					endTimers();
+				}
+			});
+		}());
   </script>
 </polymer-element>

@@ -26,7 +26,9 @@
   <script>
 		Polymer({
 			handleBasket: function(event, detail, sender) {
-				this.teamScore += detail.points;
+				if (this.teamScore + detail.points >= 0) {
+					this.teamScore += detail.points;
+				}
 			},
 			handleScoreSetted: function(event, detail, sender) {
 				this.teamScore = detail.points;

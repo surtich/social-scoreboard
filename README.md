@@ -43,11 +43,11 @@ To merge ([see this](http://stackoverflow.com/questions/12657168/can-i-use-my-ex
 ```bash
 git clone <GitHub-repo-url>
 git remote add openshift -f <openshift-git-repo-url>
+git merge openshift/master -s recursive -X ours
 ```
 
-To merge:
+To push changes:
 
 ```bash
-git merge openshift/master -s recursive -X ours
 git push openshift HEAD
 ```

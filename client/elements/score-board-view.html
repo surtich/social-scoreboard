@@ -10,7 +10,7 @@
 				display: block;
 				position: relative;
 				background-color: black;
-				padding: 20px;
+				padding: 10px;
 				width: 100%;
 				font-size: 2em;
 				font-family: LED;
@@ -44,6 +44,9 @@
   </template>
   <script>
 		Polymer({
+			ready: function() {
+				this.scrollIntoView();
+			},
 			handleRemoveScore: function() {
 				this.fire('score-remove', {score: this.model});
 			}

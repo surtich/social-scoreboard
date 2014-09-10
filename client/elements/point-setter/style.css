@@ -5,9 +5,11 @@
 #text {
 	background-color: white;
 	color: black;
-	max-width: 100px;
-	min-height: 18px;
+	max-width: 150px;
+	min-width: 40px;
+	min-height: 40px;
 	border-radius: 3px;
 	text-align: center;
 	font-family: LED, serif;
+	font-size: 2em;
 }

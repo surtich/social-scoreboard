@@ -9,8 +9,16 @@
 				font-size: 0.35em;
 				font-weight: bold;
 			}
+			
+			@media (max-width: 768px) {
+				point-button[points="+2"], point-button[points="+3"], point-setter {
+					display: none;
+				}
+			}
+			
     </style>
     <div layout horizontal center>
+			<point-button color="red" points="-1"></point-button>
 			<point-button points="+1"></point-button>
 			<point-button points="+2"></point-button>
 			<point-button points="+3"></point-button>

@@ -7,7 +7,7 @@
 <link rel="import" href="score-board-view.html">
 <link rel="import" href="main-menu.html">
 
-<polymer-element name="main-app">
+<polymer-element name="main-app"  attributes="test">
 	<template>
 		<style>
 			:host {
@@ -57,7 +57,7 @@
 
 			<core-toolbar>
 
-				<main-menu on-score-create="{{handleCreateScore}}"></main-menu>
+				<main-menu id="menu" on-score-create="{{handleCreateScore}}"></main-menu>
 				
 				<div flex>
 				</div>
@@ -80,7 +80,7 @@
   </template>
   <script>
 		Polymer({
-			domReady: function() {
+			ready: function() {
 				this.model = this.$.scoreListModel;
 			},
 			handleCreateScore: function() {

@@ -35,16 +35,20 @@
 			}
 
 			.container {
-				width: 40%;
-				margin: 25px 50px;
+				min-width: 400px;
+				margin: 2em;
 			}
 
 			@media (min-width: 481px) {
 				#tabs {
 					width: 200px;
 				}
+			}
+
+			@media (max-width: 768px) {
 				.container {
-					width: 400px;
+					min-width: 85%;
+					margin: 5%;
 				}
 			}
 		</style>
@@ -53,14 +57,16 @@
 
 			<core-toolbar>
 
+				<main-menu on-score-create="{{handleCreateScore}}"></main-menu>
+				
+				<div flex>
+				</div>
+
 				<paper-tabs id="tabs" selected="scores" self-end>
 					<paper-tab name="scores">Scores</paper-tab>
 					<paper-tab name="favorites">Favorites</paper-tab>
 				</paper-tabs>
-				<div flex>
-				</div>
-				<main-menu on-score-create="{{handleCreateScore}}"></main-menu>
-
+				
 			</core-toolbar>
 
 			<div layout horizontal wrap id="scoreboard-container" on-score-remove="{{handleRemoveScore}}">

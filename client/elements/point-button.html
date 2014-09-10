@@ -1,30 +1,42 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 
-<polymer-element name="point-button" attributes="points">
+<polymer-element name="point-button" attributes="points color">
   <template>
     <style>
 			:host {
 				margin-left: 5px;
+
 			}
 			#button {
 				background: #4285f4;
 				color: #fff;
 				letter-spacing: 1px;
+				min-width: 40px;
+				min-height: 40px;
+				font-size: 2em;
 			}
 
 			#button:hover {
 				background: #2a56c6;
 			}
 
-			#button::shadow #ripple {
+			#button::shadow {
 				color: #fff;
+			}
+			
+			#button[color="red"] {
+				background: #AA0000;
+			}
+			
+			#button[color="red"]:hover {
+				background: red;
 			}
     </style>
 		<div>
-			<paper-button on-tap="{{buttonTap}}" id="button" label="{{points}}" raisedButton></paper-button>
+			<paper-button on-tap="{{buttonTap}}" id="button" color="{{color}}" label="{{points}}" raisedButton></paper-button>
 		</div>
-    
+
   </template>
   <script>
 		Polymer({

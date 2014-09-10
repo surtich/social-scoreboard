@@ -10,8 +10,15 @@
 				font-weight: bold;
 			}
 			
+			
+			@media (max-width: 480px) {
+				point-button[points="+2"], point-button[points="+3"] {
+					display: none;
+				}
+			}
+			
 			@media (max-width: 768px) {
-				point-button[points="+2"], point-button[points="+3"], point-setter {
+				point-setter {
 					display: none;
 				}
 			}

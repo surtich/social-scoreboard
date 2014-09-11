@@ -1,4 +1,5 @@
 /node_modules
 /nbproject/
-/client/bower_components
-/client/dist
+/server/public/bower_components
+/server/public/dist
+npm-debug.log

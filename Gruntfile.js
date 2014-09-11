@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 				options: {
 					extract: 'auto'
 				},
-				src: ['client/index.html', 'client/elements/**/*.html', 'client/elements/**/*.js']
+				src: ['server/public/index.html', 'server/public/elements/**/*.html', 'server/public/elements/**/*.js']
 			}
 		},
 		cucumberjs: {
@@ -19,24 +19,6 @@ module.exports = function(grunt) {
 				format: 'pretty'
 			},
 			features : []
-		},
-		connect: {
-			'client-dev': {
-				options: {
-					port: process.env.OPENSHIFT_NODEJS_PORT || 9001,
-					hostname: process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-					base: 'client',
-					keepalive: true
-				}
-			},
-			'client-dist': {
-				options: {
-					port: process.env.OPENSHIFT_NODEJS_PORT || 9002,
-					hostname: process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-					base: 'client/dist',
-					keepalive: true
-				}
-			}
 		},
 		vulcanize: {
 			default: {
@@ -49,22 +31,26 @@ module.exports = function(grunt) {
 					}
 				},
 				files: {
-					'client/dist/index.html': 'client/index.html'
+					'server/public/dist/index.html': 'server/public/index.html'
 				},
 			}
 		},
 		'dist-client': {
 			default: {}
+		},
+		shell: {
+			runLocalServer: {
+				command: 'DEBUG=social-scoreboard* node server/server'
+			}
 		}
 	});
 	
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-cucumberjs');
-	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-vulcanize');
 	
 	grunt.registerMultiTask('dist-client', 'Prepare client files to distribution', function() {
-		var inDir = './client/';
+		var inDir = './server/public/';
 		var outDir = inDir + 'dist/';
 		grunt.log.writeln('Removing client/dist directory...');
 		var done = this.async();
@@ -87,9 +73,8 @@ module.exports = function(grunt) {
 	
 	grunt.registerTask('server-test', ['jshint:server', 'cucumberjs']);
 	
-	grunt.registerTask('client-dev-run', ['jshint:client', 'connect:client-dev']);
-	grunt.registerTask('client-dist-run', ['jshint:client', 'dist-client', 'connect:client-dist']);
+	grunt.loadNpmTasks('grunt-shell');
 	
-	grunt.registerTask('default', ['server-test']);
+	grunt.registerTask('default', ['server-test', 'shell:runLocalServer']);
 
 };

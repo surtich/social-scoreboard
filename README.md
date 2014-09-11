@@ -47,7 +47,6 @@ git merge openshift/master -s recursive -X ours
 ```
 
 To push changes:
-
 ```bash
 git pull
 git push openshift HEAD

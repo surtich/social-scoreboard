@@ -55,6 +55,11 @@ module.exports = function(grunt) {
 		},
 		'dist-client': {
 			default: {}
+		},
+		shell: {
+			runLocalServer: {
+				command: 'DEBUG=social-scoreboard* node server/server'
+			}
 		}
 	});
 	
@@ -89,7 +94,8 @@ module.exports = function(grunt) {
 	
 	grunt.registerTask('client-dev-run', ['jshint:client', 'connect:client-dev']);
 	grunt.registerTask('client-dist-run', ['jshint:client', 'dist-client', 'connect:client-dist']);
+	grunt.loadNpmTasks('grunt-shell');
 	
-	grunt.registerTask('default', ['server-test']);
+	grunt.registerTask('default', ['server-test', 'shell:runLocalServer']);
 
 };

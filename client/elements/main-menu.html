@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/core-icons/core-icons.html">
-<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
 
 
 
@@ -9,16 +9,13 @@
   <template>
     <style>
 			:host {
-				
 			}			
-			#menu	{
-			}
     </style>
-		<paper-menu-button id="menu" icon="menu">
-			<paper-item id="createScoreMenuItem" on-click="{{handleCreateScore}}" label="New Score"></paper-item>
-			<paper-item label="Help"></paper-item>
-			<paper-item label="Sign Out"></paper-item>
-		</paper-menu-button>
+		<core-menu id="menu" icon="menu">
+			<core-item id="createScoreMenuItem" on-click="{{handleCreateScore}}" label="New Score" icon="add"></core-item>
+			<core-item label="Help"></core-item>
+			<core-item label="Sign Out"></core-item>
+		</core-menu>
   </template>
   <script>
 		Polymer({

@@ -76,6 +76,7 @@ module.exports = function(grunt) {
 				fs.mkdirsSync(outDir);
 				grunt.task.run('vulcanize');
 				fs.copySync(inDir + 'font', outDir + 'font');
+				fs.copySync(inDir + 'img', outDir + 'img');
 				fs.copySync(inDir + 'bower_components', outDir + 'bower_components');
 				fs.copySync(inDir + 'css', outDir + 'css');
 				fs.copySync(inDir + 'elements/point-setter/presenter.js', outDir  + 'elements/point-setter/presenter.js'); //TODO Minify this- Vulvanize can't do it

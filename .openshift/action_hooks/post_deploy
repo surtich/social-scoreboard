@@ -1,5 +1,4 @@
 echo "**************************** Starting Web Server ****************************"
-killall grunt
 cd $OPENSHIFT_REPO_DIR
 
 HOME=$HOME/app-root/runtime ./node_modules/.bin/grunt client-dist-run &

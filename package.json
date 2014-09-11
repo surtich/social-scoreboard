@@ -4,8 +4,9 @@
   "description": "",
   "scripts": {
     "test": "cucumber.js",
-    "start": "DEBUG=social-scoreboard* node server/server"
+    "start": "DEBUG=social-scoreboard* node server/server.js"
   },
+  "main": "server/server.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:IGZJavierPerez/social-scoreboard.git"

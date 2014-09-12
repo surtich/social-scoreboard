@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-var scores = {};
-var numScores = 0;
+var scoreModel = require('../model/scores');
 
 /* ROUTES */
 router.post('/', createScore);
-router.put('/:scoreId', updateScore);
+router.put('/:scoreId/basket', scoreBasket);
+router.put('/:scoreId/set', setScore);
 router.get('/:scoreId', getScore);
 router.delete('/:scoreId', delScore);
 router.get('/', getAll);
@@ -17,35 +17,32 @@ router.param('scoreId', checkScoreExists);
 /* END PARAMS */
 
 function createScore(req, res) {
-	var score = {
-		_id: String(numScores),
-		home: 0,
-		guest: 0
-	};
-	
-	scores[score._id] = score;
-	numScores++;
-  
-	res.json(score);
+  var score = scoreModel.create();
+	res.json(score.toJSON());
 }
 
-
-function updateScore(req, res) {
-	var newScore = {
-		_id: req.params.scoreId,
-		home: req.body.home,
-		guest: req.body.guest
-	};
+function scoreBasket(req, res) {
+	var team = req.body.team;
+	var points = req.body.points;	
+	var score = req.score;
 	
-	scores[req.params.scoreId] = newScore;
-	
+	var newScore = score.scoreOneBasket(team, points);
 	res.json(newScore);
 }
 
+function setScore(req, res) {
+	var team = req.body.team;
+	var points = req.body.points;	
+	var score = req.score;
+	
+	var newScore = score.setScoreTeam(team, points);
+	res.json(newScore);
+}
+
+
 function delScore(req, res) {
 	
-	delete scores[req.params.scoreId];
-	
+	scoreModel.del(req.params.scoreId);
 	res.send('scored ' + req.params.scoreId + ' removed.');
 }
 
@@ -54,12 +51,13 @@ function getScore(req, res) {
 }
 
 function getAll(req, res) {
-	res.json(scores);
+	res.json(scoreModel.getAll());
 }
 
 function checkScoreExists (req, res, next, scoreId) {
-	if (scores[scoreId]) {
-		req.score = scores[scoreId];
+	var score = scoreModel.get(scoreId);
+	if (score) {
+		req.score = score;
 		next();
 	} else {
 		next(new Error(scoreId + ' not exists'));

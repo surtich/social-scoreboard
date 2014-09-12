@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		jshint: {
 			server: {
-				src: ['Gruntfile.js', 'features/**/*.js', 'model/**.js']
+				src: ['Gruntfile.js', 'features/**/*.js', 'model/**.js', 'server/server.js', 'server/routes/**/*.js']
 			},
 			client: {
 				options: {
@@ -75,6 +75,6 @@ module.exports = function(grunt) {
 	
 	grunt.loadNpmTasks('grunt-shell');
 	
-	grunt.registerTask('default', ['server-test', 'shell:runLocalServer']);
+	grunt.registerTask('default', ['server-test', 'jshint:client', 'shell:runLocalServer']);
 
 };

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var scoreModel = require(process.cwd() + '/model/score');
+var scoreModel = require(__dirname + '/../../model/scores');
 
 module.exports = function() {
 

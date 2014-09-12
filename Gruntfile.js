@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 			options: {
 				format: 'pretty'
 			},
-			features : []
+			features : ['server/features/*']
 		},
 		vulcanize: {
 			default: {
@@ -75,6 +75,6 @@ module.exports = function(grunt) {
 	
 	grunt.loadNpmTasks('grunt-shell');
 	
-	grunt.registerTask('default', ['server-test', 'jshint:client', 'shell:runLocalServer']);
+	grunt.registerTask('default', ['jshint:client', 'server-test', 'shell:runLocalServer']);
 
 };

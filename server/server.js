@@ -5,6 +5,8 @@ var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 
+var config = require('./util/config');
+
 var app = express();
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -18,7 +20,9 @@ app.use(function(err, req, res, next) {
 	if (err) {
 
 		if (!err.statusCode || err.statusCode === 500) {
-			console.error(err);
+			if (process.env.CONFIG !== 'cucumber') {
+				console.error(err);
+			}
 		}
 
 		var errorJson = {
@@ -46,8 +50,8 @@ fs.readdirSync(basePath).forEach(function(filename) {
 	app.use(basePathService, require(serviceDefinition));
 });
 
-var port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 9001;
-var ip = process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '0.0.0.0';
+var ip = config.server.ip;
+var port = config.server.port;
 
 app.listen(port, ip, function() {
 	debug('Application listening on http://' + ip + ':' + port);

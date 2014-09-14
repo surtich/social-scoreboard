@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
-<link rel="import" href="score-team.html">
 <link rel="import" href="score-board-model.html">
+<link rel="import" href="score-team.html">
 
 <polymer-element name="score-board-view" attributes="model">
   <template>
@@ -29,9 +29,8 @@
 				color: red;
 			}
     </style>
-
-		<div layout horizontal around-justified>
-			<!--<score-board-model id="scoreModel"></score-board-model>-->
+		<score-board-model id="scoreModel"></score-board-model>
+		<div layout horizontal around-justified on-score-updated="{{handleScoreUpdated}}">
 			<score-team id="home" teamName="home" teamScore="{{model.home}}"></score-team>
 			<score-team id="guest" teamName="guest" teamScore="{{model.guest}}"></score-team>
 		</div>
@@ -50,6 +49,11 @@
 			},
 			handleRemoveScore: function() {
 				this.fire('score-remove', {score: this.model});
+			},
+			handleScoreUpdated: function(event, detail, sender) {
+				var team = detail.team;
+				var points = detail.points;
+				this.$.scoreModel.setScore(this.model, team, points);
 			}
 		});
   </script>

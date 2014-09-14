@@ -30,14 +30,12 @@ function setScoreTeam(scoreId, team, points, callback) {
 	};
 	
 	update.$set[team] = points;
-	
 	if (checkValidScore(points) && checkTeamName(team)) {
 		daoScore.updateScore(scoreId, update, callback);
 	} else {
 		callback('Invalid points[' + points + '] or team[' + team + ']');
 	}
 }
-
 
 function scoreBasket(scoreId, team, points, callback) {
 	
@@ -52,6 +50,9 @@ function scoreBasket(scoreId, team, points, callback) {
 		callback('Invalid points[' + points + '] or team[' + team + ']');
 	}
 }
+
+
+
 
 function checkValidBasket(points) {
 	return points === 1 || points === 2 || points === 3;

@@ -14,7 +14,7 @@ module.exports = function() {
 							if (err) {
 								return callback(err);
 							}
-							var score = res.body[0];
+							var score = res.body;
 							self.scoreId = score._id;
 							callback();
 						});

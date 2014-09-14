@@ -34,7 +34,7 @@ function getAll(req, res) {
 	});
 }
 
-function delScore(req, res) {
+function delScore(req, res, next) {
 	var scoreId = req.params.scoreId;
 	scoreManager.delScore(req.params.scoreId, function(err, result) {
 		if (result === 0) {
@@ -46,27 +46,23 @@ function delScore(req, res) {
 }
 
 function scoreBasket(req, res, next) {
-	var scoreId = req.params.scoreId;
-	var team = req.body.team;
-	var points = req.body.points;
-
-	scoreManager.scoreBasket(scoreId, team, points, function(err, newScore) {
-		if (newScore === null) {
-			next(new Error(new Error(scoreId + ' not exists')));
-		} else {
-			res.json(newScore);
-		}
-		
-	});
+	updateScore(scoreManager.scoreBasket, req, res, next);
 }
 
 function setScore(req, res, next) {
+	updateScore(scoreManager.setScoreTeam, req, res, next);
+}
+
+function updateScore(fn, req, res, next) {
 	var scoreId = req.params.scoreId;
 	var team = req.body.team;
 	var points = req.body.points;
 
-	scoreManager.setScoreTeam(scoreId, team, points, function(err, newScore) {
-		if (newScore === null) {
+	fn(scoreId, team, points, function(err, newScore) {
+		if (err) {
+			return next(err);
+		}
+		if (!newScore) {
 			next(new Error(new Error(scoreId + ' not exists')));
 		} else {
 			res.json(newScore);
@@ -74,5 +70,6 @@ function setScore(req, res, next) {
 		
 	});
 }
+
 
 module.exports = router;

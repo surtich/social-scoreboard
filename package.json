@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "cucumber.js",
-    "start": "DEBUG=social-scoreboard* node server/server.js"
+    "start": "CONFIG=openshift DEBUG=social-scoreboard* node server/server.js"
   },
   "main": "server/server.js",
   "repository": {

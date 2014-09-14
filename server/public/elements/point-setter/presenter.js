@@ -14,6 +14,7 @@
 			var points = sender.value;
 			if (checkValidScore(points)) {
 				this.fire('score-setted', {
+					team: this.teamName,
 					points: Number(points)
 				});
 			}

@@ -3,7 +3,13 @@ var toObjectID = require('../util/mongodb').toObjectID;
 var col = db.bind('score');
 
 function create(score, callback) {
-	this.insert(score, callback);
+	this.insert(score, function(err, result) {
+		if (err) {
+			return callback(err);
+		}
+		
+		callback(null, result[0]);
+	});
 }
 
 function getById(scoreId, callback) {

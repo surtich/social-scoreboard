@@ -9,30 +9,19 @@ To install:
 
 ```bash
 npm install
+bower install
 ```
-
-server
-======
 
 To test with Cucumber:
 
 ```bash
-grunt
-```
-
-client
-======
-
-To install:
-
-```bash
-bower install
+grunt server-test
 ```
 
 To start Web server
 
 ```bash
-grunt client-dev-run
+grunt
 ```
 
 deploy to OpenShift

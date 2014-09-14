@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "cucumber.js",
-    "start": "DEBUG=social-scoreboard* node server/server.js"
+    "start": "CONFIG=openshift DEBUG=social-scoreboard* node server/server.js"
   },
   "main": "server/server.js",
   "repository": {
@@ -36,6 +36,8 @@
     "express": "^4.9.0",
     "debug": "^2.0.0",
     "serve-favicon": "^2.1.3",
-    "body-parser": "^1.8.1"
+    "body-parser": "^1.8.1",
+    "mongoskin": "^1.4.4",
+    "supertest": "^0.13.0"
   }
 }

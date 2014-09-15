@@ -24,24 +24,28 @@
     </div>
   </template>
   <script>
+		(function() {
+			var fireScoreUpdated = _.debounce(function() {
+				this.fire('score-updated', {
+					team: this.teamName,
+					points: this.teamScore
+				});
+			}, 800);
 
-		Polymer({
-			handleBasket: function(event, detail, sender) {
-				if (this.teamScore + detail.points >= 0) {
-					this.teamScore += detail.points;
+			Polymer({
+				handleBasket: function(event, detail, sender) {
+					if (this.teamScore + detail.points >= 0) {
+						this.teamScore += detail.points;
+						window.navigator.vibrate(20);
+						fireScoreUpdated.call(this);
+					}
+				},
+				handleScoreSetted: function(event, detail, sender) {
+					this.teamScore = detail.points;
+					window.navigator.vibrate(20);
+					fireScoreUpdated.call(this);
 				}
-			},
-			handleScoreSetted: function(event, detail, sender) {
-				this.teamScore = detail.points;
-			},
-			teamScoreChanged: _.debounce(function (oldValue, newValue) {
-				if (oldValue !== undefined && oldValue !== newValue) {
-					this.fire('score-updated', {
-						team: this.teamName,
-						points: newValue
-					});
-				}
-			}, 600)
-		});
+			});
+		}());
   </script>
 </polymer-element>

@@ -13,7 +13,7 @@
     </style>
 		<core-menu id="menu" icon="menu">
 			<core-item id="createScoreMenuItem" on-click="{{handleCreateScore}}" label="New Score" icon="add"></core-item>
-			<core-item label="Help"></core-item>
+			<core-item id="refreshMenuItem" label="Refresh" on-click="{{handleRefresh}}" icon="refresh"></core-item>
 			<core-item label="Sign Out"></core-item>
 		</core-menu>
   </template>
@@ -21,6 +21,9 @@
 		Polymer({
 			handleCreateScore: function() {
 				this.fire('score-create');
+			},
+			handleRefresh: function() {
+				this.fire('refresh');
 			}
 		});
   </script>

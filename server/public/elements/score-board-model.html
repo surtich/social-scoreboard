@@ -3,20 +3,30 @@
 
 <polymer-element name="score-board-model">
 	<template>
-		
+
 	</template>
 	<script>
 		(function() {
 			var base = '/score';
 			function defaultAjaxErrorHandler(xhr, err, desc) {
 				console.log(xhr, err, desc);
-				var errorToast = document.querySelector('#errorToast');
-				errorToast.text = '[' +xhr.status + '] ' + desc + ': ' + xhr.response;
+				var errorToast = document.querySelector('#toast');
+				errorToast.text = '[' + xhr.status + '] ' + desc + ': ' + xhr.response;
 				errorToast.show();
 			}
+
+			function showMsg(msg) {
+				var toast = document.querySelector('#toast');
+				toast.text = msg;
+				toast.show();
+			}
+
 			function doAjax(options, success, error) {
 				options.type = options.type || 'GET';
 				options.url = base + (options.url || '');
+				if (socket.io.engine.id) {
+					options.url += '?socketId=' + socket.io.engine.id;
+				}
 				options.dataType = options.dataType || 'json';
 				options.contentType = options.contentType || 'application/json; charset=UTF-8';
 				options.success = success;
@@ -25,27 +35,69 @@
 				$.ajax(options);
 			}
 
-			var scores;
+			function refresh() {
+				doAjax({}, function(data) {
+					static.scores = data;
+					addListeners(static);
+				});
+			}
+
+			function addListeners(static) {
+
+
+				window.addEventListener('focus', function() {
+					//refresh();
+				});
+
+				socket.on('err', function(msg) {
+					showMsg(msg);
+				});
+
+				socket.on('scoreCreated', function(score) {
+					static.scores.push(score);
+					showMsg('Score created');
+				});
+
+				socket.on('scoreDestroyed', function(scoreId) {
+					for (var i = 0; i < static.scores.length; i++) {
+						if (scoreId === static.scores[i]._id) {
+							static.scores.splice(i, 1);
+							showMsg('Score [' + scoreId + '] destroyed');
+						}
+					}
+				});
+
+				socket.on('scoreSetted', function(score) {
+					for (var i = 0; i < static.scores.length; i++) {
+						if (score._id === static.scores[i]._id) {
+							static.scores[i].home = score.home;
+							static.scores[i].guest = score.guest;
+						}
+					}
+				});
+			}
+
+			var static = {
+				scores: null
+			};
+			
+			refresh();
+
 
 			Polymer('score-board-model', {
 				created: function() {
-					if (!scores) {
-						doAjax({}, function(data) {
-							scores = data;
-							this.scores = scores;
-						}.bind(this));
-					}
+					this.static = static;
 				},
 				newScore: function() {
 					doAjax({type: 'POST'}, function(data) {
-						this.scores.push(data);
+						this.static.scores.push(data);
 					}.bind(this));
 				},
 				destroyScore: function(score) {
 					doAjax({type: 'DELETE', url: '/' + score._id, dataType: 'text'}, function(data) {
-						var i = this.scores.indexOf(score);
+						var i = this.static.scores.indexOf(score);
 						if (i >= 0) {
-							this.scores.splice(i, 1);
+							this.static.scores.splice(i, 1);
 						}
 					}.bind(this));
 				},
@@ -58,6 +110,9 @@
 					doAjax({type: 'PUT', url: url, data: JSON.stringify(data)}, function(result) {
 						score[team] = points;
 					}.bind(this));
+				},
+				refresh: function() {
+					refresh();
 				}
 			});
 		}());

@@ -9,7 +9,8 @@ var config = require('./util/config');
 
 var app = express();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+
+var io = require('./util/socket.io')(http);
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(bodyParser.json());
@@ -46,17 +47,7 @@ var basePath = path.join(__dirname, '/routes/');
 fs.readdirSync(basePath).forEach(function(filename) {
 	var basePathService = '/' + filename.replace(/\.js$/, '');
 	var serviceDefinition = basePath + filename;
-	app.use(basePathService, require(serviceDefinition));
-});
-
-//
-// push
-//
-
-var basePath = path.join(__dirname, '/push/');
-fs.readdirSync(basePath).forEach(function(filename) {
-	var basePathPush = '/' + filename.replace(/\.js$/, '');
-	io.on('connection', require(basePath + basePathPush)(io));
+	app.use(basePathService, require(serviceDefinition)(io));
 });
 
 var ip = config.server.ip;

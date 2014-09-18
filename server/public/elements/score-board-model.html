@@ -24,6 +24,9 @@
 			function doAjax(options, success, error) {
 				options.type = options.type || 'GET';
 				options.url = base + (options.url || '');
+				if (socket.io.engine.id) {
+					options.url += '?socketId=' + socket.io.engine.id;
+				}
 				options.dataType = options.dataType || 'json';
 				options.contentType = options.contentType || 'application/json; charset=UTF-8';
 				options.success = success;
@@ -32,12 +35,18 @@
 				$.ajax(options);
 			}
 
+			function refresh() {
+				doAjax({}, function(data) {
+					static.scores = data;
+					addListeners(static);
+				});
+			}
+
 			function addListeners(static) {
 
+
 				window.addEventListener('focus', function() {
-					doAjax({}, function(data) {
-						static.scores = data;
-					});
+					//refresh();
 				});
 
 				socket.on('err', function(msg) {
@@ -71,30 +80,39 @@
 			var static = {
 				scores: null
 			};
+			
+			refresh();
 
-			doAjax({}, function(data) {
-				static.scores = data;
-				addListeners(static);
-			});
 
 			Polymer('score-board-model', {
 				created: function() {
 					this.static = static;
 				},
 				newScore: function() {
-					socket.emit('newScore');
+					doAjax({type: 'POST'}, function(data) {
+						this.static.scores.push(data);
+					}.bind(this));
 				},
 				destroyScore: function(score) {
-					socket.emit('destroyScore', score._id);
+					doAjax({type: 'DELETE', url: '/' + score._id, dataType: 'text'}, function(data) {
+						var i = this.static.scores.indexOf(score);
+						if (i >= 0) {
+							this.static.scores.splice(i, 1);
+						}
+					}.bind(this));
 				},
 				setScore: function(score, team, points) {
+					var url = '/' + score._id + '/set';
 					var data = {
-						scoreId: score._id,
 						team: team,
 						points: points
 					};
-					socket.emit('setScore', data);
-
+					doAjax({type: 'PUT', url: url, data: JSON.stringify(data)}, function(result) {
+						score[team] = points;
+					}.bind(this));
+				},
+				refresh: function() {
+					refresh();
 				}
 			});
 		}());

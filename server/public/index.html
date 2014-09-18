@@ -29,10 +29,16 @@
 	<script>
 
 		var socket = io.connect(':8000/', {
-			'timeout': Infinity // defaults to 20000
+			timeout: Infinity
 		});
-
-
+		
+		socket.on('connect', function() {
+		});
+		
+		socket.on('disconnect', function() {
+		});
+		
+		
 
 	</script>	
 </body>

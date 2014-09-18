@@ -48,7 +48,7 @@
 			}
 		</style>
 		<score-board-model id="scoreModel"></score-board-model>
-		<core-scaffold id="scaffold" responsiveWidth="1100px" mode="scroll" on-score-create="{{handleCreateScore}}">
+		<core-scaffold id="scaffold" responsiveWidth="1100px" mode="scroll" on-score-create="{{handleCreateScore}}" on-refresh="{{handleRefresh}}">
 			<core-header-panel navigation flex>
 				<main-menu id="menu"></main-menu>
 			</core-header-panel>
@@ -68,6 +68,10 @@
 			},
 			handleCreateScore: function() {
 				this.model.newScore();
+				this.$.scaffold.closeDrawer();
+			},
+			handleRefresh: function() {
+				this.model.refresh();
 				this.$.scaffold.closeDrawer();
 			},
 			handleRemoveScore: function(event, detail) {

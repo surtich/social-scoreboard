@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var scoreManager = require('../manager/score');
-var ensureAuth = require('../middleware/sec');
+var ensureAuth = require('../middleware/sec').ensureAuthenticated;
+var ensureOwner = require('../middleware/sec').ensureOwner;
 var debug = require('debug')('social-scoreboard-route-score');
 
 function worker(io) {
@@ -9,10 +10,10 @@ function worker(io) {
 	/* ROUTES */
 	router.all('/*', ensureAuth);
 	router.post('/', createScore);
-	router.put('/:scoreId/basket', scoreBasket);
-	router.put('/:scoreId/set', setScore);
+	router.put('/:scoreId/basket', ensureOwner, scoreBasket);
+	router.put('/:scoreId/set', ensureOwner, setScore);
 	router.get('/:scoreId', getScore);
-	router.delete('/:scoreId', delScore);
+	router.delete('/:scoreId', ensureOwner, delScore);
 	router.get('/', getAll);
 	/* END ROUTES */
 
@@ -21,6 +22,7 @@ function worker(io) {
 			if (err) {
 				return next(err);
 			}
+			debug('score created[' + result._id + ']');
 			res.json(result);
 			io.emitOthers('scoreCreated', result, req.query.socketId);
 		});
@@ -41,7 +43,7 @@ function worker(io) {
 		});
 	}
 
-	function getAll(req, res) {
+	function getAll(req, res, next) {
 		scoreManager.getAll(function(err, scores) {
 			if (err) {
 				return next(err);
@@ -59,6 +61,7 @@ function worker(io) {
 			if (result === 0) {
 				next(new Error(scoreId + ' not exists'));
 			} else {
+				debug('score destroyed[' + scoreId + ']');
 				res.send('Score[' + scoreId + ' deleted');
 				io.emitOthers('scoreDestroyed', scoreId, req.query.socketId);
 			}
@@ -85,6 +88,7 @@ function worker(io) {
 			if (!newScore) {
 				next(new Error(new Error(scoreId + ' not exists')));
 			} else {
+				debug('score updated[' + scoreId + ']');
 				res.json(newScore);
 				io.emitOthers('scoreSetted', newScore, req.query.socketId);
 			}

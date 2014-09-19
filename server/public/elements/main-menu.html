@@ -45,7 +45,7 @@
 			},
 			loggedChanged: function() {
 				if (this.logged) {
-					doAjax({url: '/user/profile'}).done(function(user) {
+					getProfile().done(function(user) {
 						this.photoUrl = user._json.picture;
 					}.bind(this)).fail(function() {
 						this.photoUrl = '';

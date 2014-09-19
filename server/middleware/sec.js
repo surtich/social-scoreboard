@@ -1,6 +1,7 @@
 var jwtSecret = require('../util/config').jwtSecret;
 var debug = require('debug')('social-scoreboard-sec');
 var jwt = require('jsonwebtoken');
+var daoScore = require('../dao/score');
 
 /**
  * Check if the token user exists, in other case FORBIDDEN
@@ -31,4 +32,40 @@ function ensureAuthenticated(req, res, next) {
 
 }
 
-module = module.exports = ensureAuthenticated;
+
+/**
+ * Check if the user is the owner of the score, in other case FORBIDDEN
+ */
+function ensureOwner(req, res, next) {
+	var scoreId = req.params.scoreId;
+	var userId = req.user.id;
+	if (!scoreId && !userId) {
+		debug('ensureOwner Invalid[' + scoreId + '] or userId[' + userId + ']');
+		return res.status(500).send('Invalid user or score');
+	}
+	
+	daoScore.getById(scoreId, function(err, score) {
+		if (err) {
+			debug('ensureOwner error: ' + err);
+			return res.status(500).send('error');
+		}
+		
+		if (!score) {
+  		debug('invalid score');
+			return res.status(500).send('invalid score');
+		}
+		
+		if (!score || score.owner !== userId) {
+			debug('invalid owner score[' + score.owner + ' logged user[' + userId + ']');
+			return res.status(500).send('invalid owner');
+		}
+		
+		next(null);
+	});
+}
+
+
+module = module.exports = {
+	ensureAuthenticated: ensureAuthenticated,
+	ensureOwner: ensureOwner
+};

@@ -4,7 +4,7 @@ module.exports = {
 		port: process.env.PORT || 8000
 	},
 	db: {
-		conn: 'mongodb://0.0.0.0:27017/socialscoreboard'
+		conn: "mongodb://127.0.0.1:27017/socialscoreboard"
 	},
 	ids: {
 		google: {

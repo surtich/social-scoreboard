@@ -77,3 +77,25 @@ var socket = (function() {
 		}
 	};
 }());
+
+var getProfile = (function() {
+	
+	var profile = null;
+
+	return function() {
+		var deferred = $.Deferred();
+		if (profile) {
+			return deferred.resolve(profile);
+		} else {
+			doAjax({url: '/user/profile'}).done(function(user) {
+				profile = user;
+				deferred.resolve(profile);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				var err = '[doAjax] ERROR[' + jqXHR.status + '] textStatus[' + textStatus + '] errorThrown[' + errorThrown + ']';
+				console.log(err);
+				deferred.reject(err);
+			});
+		}
+		return deferred.promise();
+	};
+}());

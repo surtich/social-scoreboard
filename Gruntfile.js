@@ -51,12 +51,18 @@ module.exports = function(grunt) {
 			runLocalServer: {
 				command: 'DEBUG=social-scoreboard* node server/server'
 			}
-		}
+		},
+		env: {
+      cucumber : {
+        CONFIG : "cucumber"
+      }
+    }
 	});
 	
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-cucumberjs');
 	grunt.loadNpmTasks('grunt-vulcanize');
+	grunt.loadNpmTasks('grunt-env');
 	
 	grunt.registerMultiTask('dist-client', 'Prepare client files to distribution', function() {
 		var inDir = './server/public/';
@@ -80,7 +86,7 @@ module.exports = function(grunt) {
 		});
 	});
 	
-	grunt.registerTask('server-test', ['jshint:server', 'cucumberjs']);
+	grunt.registerTask('server-test', ['env:cucumber', 'jshint:server', 'cucumberjs']);
 	
 	grunt.loadNpmTasks('grunt-shell');
 	

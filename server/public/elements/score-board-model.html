@@ -10,8 +10,8 @@
 			};
 
 			function refresh() {
-				doAjax({url: base}, function(data) {
-					static.scores = data;
+				doAjax({url: base}, function(scores) {
+					static.scores = scores;
 				});
 			}
 			
@@ -25,8 +25,13 @@
 				});
 
 				this.on('scoreCreated', function(score) {
-					static.scores.push(score);
-					showMsg('Score created');
+          var exists = static.scores.some(function(itemScore) {
+			      return score._id === itemScore._id;
+			    });
+				  if (!exists) {
+  				  static.scores.push(score);
+	  				showMsg('Score created');
+	  			}
 				});
 
 				this.on('scoreDestroyed', function(scoreId) {

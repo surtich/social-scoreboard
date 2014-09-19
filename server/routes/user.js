@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var ensureAuth = require('../middleware/sec');
+var ensureAuth = require('../middleware/sec').ensureAuthenticated;
 
 function worker(io) {
 

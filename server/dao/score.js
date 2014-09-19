@@ -2,6 +2,7 @@ var db = require('../util/mongodb').db;
 var toObjectID = require('../util/mongodb').toObjectID;
 var col = db.bind('score');
 
+
 function create(score, callback) {
 	this.insert(score, function(err, result) {
 		if (err) {

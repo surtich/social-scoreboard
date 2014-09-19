@@ -9,6 +9,7 @@ module.exports = function() {
 		var self = this;
 		request(app)
 						.put('/score/' + self.scoreId + '/basket')
+						.set('Authorization', 'Bearer ' + self.token)
 						.send({'team': offenseTeam, 'points': points})
 						.end(function(err, res) {
 							callback();
@@ -20,6 +21,7 @@ module.exports = function() {
 		var self = this;
 		request(app)
 						.put('/score/' + self.scoreId + '/set')
+						.set('Authorization', 'Bearer ' + self.token)
 						.send({'team': team, 'points': points})
 						.end(function(err, res) {
 							callback();

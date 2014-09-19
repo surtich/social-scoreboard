@@ -3,11 +3,11 @@ var app = require('../../server');
 var request = require('supertest');
 
 module.exports = function() {
-
 	this.Given(/^a initial score$/, function(callback) {
 		var self = this;
 		request(app)
 						.post('/score')
+						.set('Authorization', 'Bearer ' + self.token)
 						.expect('Content-Type', /json/)
 						.expect(200)
 						.end(function(err, res) {
@@ -24,6 +24,7 @@ module.exports = function() {
 		var self = this;
 		request(app)
 						.get('/score/' + self.scoreId)
+						.set('Authorization', 'Bearer ' + self.token)
 						.expect('Content-Type', /json/)
 						.expect(200)
 						.end(function(err, res) {

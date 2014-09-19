@@ -1,11 +1,10 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
-
 <link rel="import" href="../bower_components/core-scaffold/core-scaffold.html">
 <link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
 <link rel="import" href="score-board-model.html">
 <link rel="import" href="score-board-view.html">
 <link rel="import" href="main-menu.html">
+<link rel="import" href="app-login.html">
 
 <polymer-element name="main-app">
 	<template>
@@ -47,10 +46,11 @@
 				}
 			}
 		</style>
-		<score-board-model id="scoreModel"></score-board-model>
-		<core-scaffold id="scaffold" responsiveWidth="1100px" mode="scroll" on-score-create="{{handleCreateScore}}" on-refresh="{{handleRefresh}}">
+		<score-board-model id="scoreModel"  logged="{{login.logged}}"></score-board-model>
+		<app-login id="login"></app-login>
+		<core-scaffold id="scaffold" responsiveWidth="1100px" mode="scroll" on-login="{{handleLogin}}" on-logout="{{handleLogout}}"  on-score-create="{{handleCreateScore}}" on-refresh="{{handleRefresh}}">
 			<core-header-panel navigation flex>
-				<main-menu id="menu"></main-menu>
+				<main-menu id="menu" logged="{{login.logged}}"></main-menu>
 			</core-header-panel>
 			<div layout horizontal wrap id="scoreboard-container" on-score-remove="{{handleRemoveScore}}">
 				<template repeat="{{model.static.scores}}">
@@ -65,6 +65,7 @@
 		Polymer({
 			ready: function() {
 				this.model = this.$.scoreModel;
+				this.login = this.$.login;
 			},
 			handleCreateScore: function() {
 				this.model.newScore();
@@ -76,7 +77,16 @@
 			},
 			handleRemoveScore: function(event, detail) {
 				this.model.destroyScore(detail.score);
+			},
+			handleLogin: function(event, detail) {
+				this.$.login.login();
+				this.$.scaffold.closeDrawer();
+			},
+			handleLogout: function(event, detail) {
+				this.$.login.logout();
+				this.$.scaffold.closeDrawer();
 			}
+			
 		});
   </script>
 </polymer-element>

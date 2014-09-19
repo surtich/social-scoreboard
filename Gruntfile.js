@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 							'server/manager/**/*.js',
 							'server/dao/**/*.js',
 							'server/util/**/*.js',
+							'server/middleware/**/*.js',
 							'server/config/**/*.js'
 						]
 			},
@@ -19,7 +20,7 @@ module.exports = function(grunt) {
 				options: {
 					extract: 'auto'
 				},
-				src: ['server/public/index.html', 'server/public/elements/**/*.html', 'server/public/elements/**/*.js']
+				src: ['server/public/*.html', 'server/public/elements/**/*.html', 'server/public/elements/**/*.js', 'server/public/util/**/*.js']
 			}
 		},
 		cucumberjs: {

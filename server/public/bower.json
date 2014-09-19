@@ -20,6 +20,7 @@
     "paper-elements": "Polymer/paper-elements#~0.4.0",
     "zepto": "~1.1.4",
     "underscore": "~1.7.0",
-    "socket.io-client": "~1.1.0"
+    "socket.io-client": "~1.1.0",
+    "zepto-ajax": "~1.0.3"
   }
 }

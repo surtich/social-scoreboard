@@ -10,14 +10,19 @@
 		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no">
 
 		<script src="bower_components/zepto/zepto.min.js"></script>
+		<script src="lib/zepto/callbacks.js"></script>
+		<script src="lib/zepto/deferred.js"></script>
 		<script src="bower_components/underscore/underscore-min.js"></script>
 		<script src="bower_components/platform/platform.js"></script>
-
+		
+		<script src="util/util.js"></script>
+		
 		<script src="bower_components/socket.io-client/socket.io.js"></script>
 
 		<link rel="stylesheet" href="css/base.css">
+		<link rel="import" href="bower_components/polymer/polymer.html">
 		<link rel="import" href="./elements/main-app.html">
-		<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+		<link rel="import" href="bower_components/paper-toast/paper-toast.html">
 
 	</head>
 
@@ -27,18 +32,6 @@
 	</paper-toast>
 	<main-app></main-app>
 	<script>
-
-		var socket = io.connect(':8000/', {
-			timeout: Infinity
-		});
-		
-		socket.on('connect', function() {
-		});
-		
-		socket.on('disconnect', function() {
-		});
-		
-		
 
 	</script>	
 </body>

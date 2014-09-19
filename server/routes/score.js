@@ -1,10 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var scoreManager = require('../manager/score');
+var ensureAuth = require('../middleware/sec');
+var debug = require('debug')('social-scoreboard-route-score');
 
 function worker(io) {
 
 	/* ROUTES */
+	router.all('/*', ensureAuth);
 	router.post('/', createScore);
 	router.put('/:scoreId/basket', scoreBasket);
 	router.put('/:scoreId/set', setScore);
@@ -13,8 +16,11 @@ function worker(io) {
 	router.get('/', getAll);
 	/* END ROUTES */
 
-	function createScore(req, res) {
-		scoreManager.create(function(err, result) {
+	function createScore(req, res, next) {
+		scoreManager.create(req.user.id, function(err, result) {
+			if (err) {
+				return next(err);
+			}
 			res.json(result);
 			io.emitOthers('scoreCreated', result, req.query.socketId);
 		});
@@ -23,6 +29,10 @@ function worker(io) {
 	function getScore(req, res, next) {
 		var scoreId = req.params.scoreId;
 		scoreManager.getById(scoreId, function(err, score) {
+			if (err) {
+				return next(err);
+			}
+			
 			if (score) {
 				res.json(score);
 			} else {
@@ -33,6 +43,9 @@ function worker(io) {
 
 	function getAll(req, res) {
 		scoreManager.getAll(function(err, scores) {
+			if (err) {
+				return next(err);
+			}
 			res.json(scores);
 		});
 	}
@@ -40,6 +53,9 @@ function worker(io) {
 	function delScore(req, res, next) {
 		var scoreId = req.params.scoreId;
 		scoreManager.delScore(req.params.scoreId, function(err, result) {
+			if (err) {
+				return next(err);
+			}
 			if (result === 0) {
 				next(new Error(scoreId + ' not exists'));
 			} else {

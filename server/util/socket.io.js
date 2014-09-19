@@ -1,8 +1,11 @@
-var clients = {};
-
+var debug = require('debug')('social-scoreboard-io');
+var socketioJwt = require('socketio-jwt');
+var jwtSecret = require('../util/config').jwtSecret;
+var jwt = require('jsonwebtoken');
 
 module.exports = function(http) {
 	var io = require('socket.io')(http);
+
 	io.set('transports', ['websocket',
 		'flashsocket',
 		'htmlfile',
@@ -10,24 +13,39 @@ module.exports = function(http) {
 		'jsonp-polling',
 		'polling']);
 
-	io.on('connection', function(socket) {
-		clients[socket.id] = true;
+	io.set('authorization', socketioJwt.authorize({
+		secret: jwtSecret,
+		handshake: true
+	}));
+
+	io.sockets.on('connection', function(socket) {
+		var token = socket.handshake.query.token;
+
+			debug('connected id[' + socket.conn.id + ']');
+			
+
 		socket.on('disconnect', function() {
-			delete clients[socket.id];
+			debug('disconnect id[' + socket.conn.id + ']');
 		});
+
+		//socket.on('event');
 	});
 	
-	io.emitOthers = function(event, data, ownerIdSocket) {
-		if (ownerIdSocket) {
-			for(var idSocket in clients) {
-				if (idSocket !== ownerIdSocket) {
-					var socket = io.sockets.connected[idSocket];
+	function decode(token, jwtSecret, callback) {
+		return jwt.verify(token, jwtSecret, callback);
+	}
+	
+	io.emitOthers = function(event, data, emitterId) {
+		if (emitterId) {
+			for (var idSocket in io.sockets.connected) {
+				var socket = io.sockets.connected[idSocket];
+				if (emitterId !== idSocket) {
 					socket.emit(event, data);
 				}
 			}
 		}
 	};
-	
+
 	return io;
 
 };

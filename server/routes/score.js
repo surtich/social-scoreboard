@@ -62,7 +62,7 @@ function worker(io) {
 				next(new Error(scoreId + ' not exists'));
 			} else {
 				debug('score destroyed[' + scoreId + ']');
-				res.send('Score[' + scoreId + ' deleted');
+				res.send('Score[' + scoreId + '] deleted');
 				io.emitOthers('scoreDestroyed', scoreId, req.query.socketId);
 			}
 		});

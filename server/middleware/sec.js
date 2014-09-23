@@ -18,12 +18,20 @@ function ensureAuthenticated(req, res, next) {
 	}
 
 	var token = reqAuth.replace(/^\s*Bearer\s*/, '');
+	
+	
+	if (!token) {
+		debug('No authorization token found');
+		res.send(401); // Unauthorized
+		return;
+	}
+
 
 	jwt.verify(token, jwtSecret, function(err, decode) {
 
 		if (err) {
 			debug('Decode token error: ' + err);
-			return res.send(500);
+			return res.send(401);
 		}
 		req.user = decode.profile;
 		req.token = token;

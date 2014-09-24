@@ -56,13 +56,20 @@ module.exports = function(grunt) {
       cucumber : {
         CONFIG : "cucumber"
       }
-    }
+    },
+		dredd: {
+			options: {
+				server: 'http://localhost:8000',
+				src: './server/api/apiary/apiary.apib',
+			}
+		}
 	});
 	
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-cucumberjs');
 	grunt.loadNpmTasks('grunt-vulcanize');
 	grunt.loadNpmTasks('grunt-env');
+	grunt.loadNpmTasks('grunt-dredd');
 	
 	grunt.registerMultiTask('dist-client', 'Prepare client files to distribution', function() {
 		var inDir = './server/public/';

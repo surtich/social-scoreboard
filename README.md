@@ -53,6 +53,13 @@ $ bower install
 $ grunt server-test
 ```
 
+## To test API with dredd
+
+```bash
+grunt
+grunt dredd ##In other terminal
+```
+
 ## To deploy to OpenShift
 
 ### To merge ([see this](http://stackoverflow.com/questions/12657168/can-i-use-my-existing-git-repo-with-openshift)):
@@ -69,3 +76,4 @@ $ git merge openshift/master -s recursive -X ours
 $ git pull
 $ git push openshift HEAD
 ```
+

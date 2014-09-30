@@ -50,6 +50,12 @@ module.exports = function(grunt) {
 		shell: {
 			runLocalServer: {
 				command: 'DEBUG=social-scoreboard* node server/server'
+			},
+			runLocalServerWin32: {
+				command: [
+					'set DEBUG=social-scoreboard*',
+					'node server/server'
+				].join('&&')
 			}
 		},
 		env: {
@@ -97,6 +103,14 @@ module.exports = function(grunt) {
 	
 	grunt.loadNpmTasks('grunt-shell');
 	
-	grunt.registerTask('default', ['jshint:client', 'jshint:server', 'shell:runLocalServer']);
+	grunt.registerTask('set-debug-and-run', 'Set DEBUG env var', function() {
+		if (process.platform === "win32") {
+		    grunt.task.run('shell:runLocalServerWin32');
+		} else {
+		    grunt.task.run('shell:runLocalServer');
+		}
+	});
+	
+	grunt.registerTask('default', ['jshint:client', 'jshint:server', 'set-debug-and-run']);
 
 };

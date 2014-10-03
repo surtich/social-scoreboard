@@ -1,0 +1,80 @@
+FORMAT: 1A
+HOST: socialscoreboard-dawzayas.rhcloud.com
+
+# Social Scoreboard API
+social-scoreboard API is service to share the score of a basketball game between several people.
+
+# Group Scores
+scores related resources of the *Social Scoreboard API**
+    
+
+## Scores Collection [/score]
+
++ Model (application/json; charset=utf-8)
+    
+    JSON representation of Score Collection Resource.
+
+    + Body !include(social-scoreboard-scores.sample, {spaces: 12, lineBreaks: 2})
+
+### List all Scores [GET]
+
++ Request
+
+    + Headers
+    
+!include(token.sample)
+
+
++ Response 200 (application/json; charset=utf-8)
+    [Scores Collection][]
+
+    + Schema !include(social-scoreboard-scores.schema, {spaces: 16, lineBreaks: 2})
+        
+
+### Create a Score [POST]
++ Request (application/json)
+
+    + Headers
+    
+!include(token.sample)
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body !include(social-scoreboard-score.sample, {spaces: 12, lineBreaks: 2})
+            
+    + Schema !include(social-scoreboard-score.schema, {spaces: 16, lineBreaks: 2})
+
+
+## Score [/score/{idScore}]
+A single Score object with all its details
+
++ Parameters
+    + idScore (required, string, `541eec44753a9500003e56c0`) ... String `idScore` of the Score to perform action with. Has example value.
+
++ Model (application/json; charset=utf-8)
+    
+    JSON representation of Score Resource.
+
+    + Body !include(social-scoreboard-score.sample, {spaces: 12, lineBreaks: 2})
+    
+### Retrieve a single Score [GET]
++ Request (application/json)
+
+    + Headers
+    
+!include(token.sample)
+
+
++ Response 200
+    [Score][]
+
+### Remove a Score [DELETE]
++ Request (application/json)
+
+    + Headers
+    
+!include(token.sample)
+
++ Response 200 (text/html; charset=utf-8)
+
+        Score[542f0aa660bb752650ff2294] deleted

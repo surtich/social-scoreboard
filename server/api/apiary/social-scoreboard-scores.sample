@@ -1,0 +1,4 @@
+[
+!include(social-scoreboard-score.sample, {spaces: 2}),
+!include(social-scoreboard-score.sample, {spaces: 2})
+]

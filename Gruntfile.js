@@ -50,26 +50,27 @@ module.exports = function(grunt) {
 		shell: {
 			runLocalServer: {
 				command: 'DEBUG=social-scoreboard* node server/server'
+			},
+			apiaryCompile: {
+				command: 'node ./server/api/apiary/apiary.preprocesor.js -i server/api/apiary/pre.apiary.apib -o server/api/apiary/apiary.apib'
+			},
+			dredd: {
+				command: 'CONFIG=dredd dredd ./server/api/apiary/apiary.apib http://localhost:8000 --hookfiles=./server/api/apiary/hooks.js'
 			}
 		},
 		env: {
       cucumber : {
         CONFIG : "cucumber"
       }
-    },
-		dredd: {
-			options: {
-				server: 'http://localhost:8000',
-				src: './server/api/apiary/apiary.apib',
-			}
-		}
+    }
 	});
 	
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-cucumberjs');
 	grunt.loadNpmTasks('grunt-vulcanize');
 	grunt.loadNpmTasks('grunt-env');
-	grunt.loadNpmTasks('grunt-dredd');
+	grunt.loadNpmTasks('grunt-shell');
+	
 	
 	grunt.registerMultiTask('dist-client', 'Prepare client files to distribution', function() {
 		var inDir = './server/public/';
@@ -95,8 +96,10 @@ module.exports = function(grunt) {
 	
 	grunt.registerTask('server-test', ['env:cucumber', 'jshint:server', 'cucumberjs']);
 	
-	grunt.loadNpmTasks('grunt-shell');
+	grunt.registerTask('apiary', ['shell:apiaryCompile']);
+	grunt.registerTask('dredd', ['shell:apiaryCompile', 'shell:dredd']);
 	
 	grunt.registerTask('default', ['jshint:client', 'jshint:server', 'shell:runLocalServer']);
+	
 
 };

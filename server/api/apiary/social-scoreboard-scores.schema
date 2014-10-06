@@ -4,7 +4,6 @@
  "required": true,
  "$schema": "http://json-schema.org/draft-04/schema",
  "items": [
-!include(social-scoreboard-score.schema, {spaces: 2}),
-!include(social-scoreboard-score.schema, {spaces: 2})
+  !include(social-scoreboard-score.schema)
  ]
 }

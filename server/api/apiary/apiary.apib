@@ -14,19 +14,19 @@ scores related resources of the *Social Scoreboard API**
     
     JSON representation of Score Collection Resource.
 
-    + Body             
+    + Body
 
             [
               {
                 "_id": "541eec44753a9500003e56c0",
-                "home": 9,
-                "guest": 4,
+                "home": 12,
+                "guest": 0,
                 "owner": "117446425362491737926"
               },
               {
                 "_id": "541eec44753a9500003e56c0",
-                "home": 9,
-                "guest": 4,
+                "home": 12,
+                "guest": 9,
                 "owner": "117446425362491737926"
               }
             ]
@@ -43,7 +43,7 @@ scores related resources of the *Social Scoreboard API**
 + Response 200 (application/json; charset=utf-8)
     [Scores Collection][]
 
-    + Schema                 
+    + Schema
 
                 {
                  "type": "array",
@@ -51,40 +51,6 @@ scores related resources of the *Social Scoreboard API**
                  "required": true,
                  "$schema": "http://json-schema.org/draft-04/schema",
                  "items": [
-                  {
-                   "type": "object",
-                   "description": "Score schema",
-                   "required": true,
-                   "$schema": "http://json-schema.org/draft-04/schema",
-                   "definitions": {
-                    "mongoId": {
-                     "type": "string",
-                     "pattern": "^[a-fA-F0-9]{24}$"
-                    },
-                    "userId": {
-                     "type": "string",
-                     "pattern": "^[0-9]{20,}$"
-                    }
-                   },
-                   "properties": {
-                    "_id": {
-                     "$ref": "#/definitions/mongoId",
-                     "required": true
-                    },
-                    "home": {
-                     "type": "integer",
-                     "required": true
-                    },
-                    "guest": {
-                     "type": "integer",
-                     "required": true
-                    },
-                    "owner": {
-                     "$ref": "#/definitions/userId",
-                     "required": true
-                    }
-                   }
-                  },
                   {
                    "type": "object",
                    "description": "Score schema",
@@ -132,16 +98,16 @@ scores related resources of the *Social Scoreboard API**
 
 + Response 200 (application/json; charset=utf-8)
 
-    + Body             
+    + Body
 
             {
               "_id": "541eec44753a9500003e56c0",
-              "home": 9,
-              "guest": 4,
+              "home": 0,
+              "guest": 0,
               "owner": "117446425362491737926"
             }
             
-    + Schema                 
+    + Schema
 
                 {
                  "type": "object",
@@ -189,12 +155,12 @@ A single Score object with all its details
     
     JSON representation of Score Resource.
 
-    + Body             
+    + Body
 
             {
               "_id": "541eec44753a9500003e56c0",
-              "home": 9,
-              "guest": 4,
+              "home": 23,
+              "guest": 35,
               "owner": "117446425362491737926"
             }
     

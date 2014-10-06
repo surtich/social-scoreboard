@@ -14,7 +14,9 @@ scores related resources of the *Social Scoreboard API**
     
     JSON representation of Score Collection Resource.
 
-    + Body !include(social-scoreboard-scores.sample, {spaces: 12, lineBreaks: 2})
+    + Body
+
+            !include(social-scoreboard-scores.sample, {values: {home: 12}})
 
 ### List all Scores [GET]
 
@@ -28,7 +30,9 @@ scores related resources of the *Social Scoreboard API**
 + Response 200 (application/json; charset=utf-8)
     [Scores Collection][]
 
-    + Schema !include(social-scoreboard-scores.schema, {spaces: 16, lineBreaks: 2})
+    + Schema
+
+                !include(social-scoreboard-scores.schema)
         
 
 ### Create a Score [POST]
@@ -40,9 +44,13 @@ scores related resources of the *Social Scoreboard API**
 
 + Response 200 (application/json; charset=utf-8)
 
-    + Body !include(social-scoreboard-score.sample, {spaces: 12, lineBreaks: 2})
+    + Body
+
+            !include(social-scoreboard-score.sample)
             
-    + Schema !include(social-scoreboard-score.schema, {spaces: 16, lineBreaks: 2})
+    + Schema
+
+                !include(social-scoreboard-score.schema)
 
 
 ## Score [/score/{idScore}]
@@ -55,7 +63,9 @@ A single Score object with all its details
     
     JSON representation of Score Resource.
 
-    + Body !include(social-scoreboard-score.sample, {spaces: 12, lineBreaks: 2})
+    + Body
+
+            !include(social-scoreboard-score.sample, {values: {home: 23, guest: 35}})
     
 ### Retrieve a single Score [GET]
 + Request (application/json)

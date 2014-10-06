@@ -58,7 +58,7 @@ module.exports = function(grunt) {
 				].join('&&')
 			},
 			apiaryCompile: {
-				command: 'node ./server/api/apiary/apiary.preprocesor.js -i server/api/apiary/pre.apiary.apib -o server/api/apiary/apiary.apib'
+				command: 'node ./server/api/apiary/apiary.preprocesor.js'
 			},
 			dredd: {
 				command: 'CONFIG=dredd dredd ./server/api/apiary/apiary.apib http://localhost:8000 --hookfiles=./server/api/apiary/hooks.js'

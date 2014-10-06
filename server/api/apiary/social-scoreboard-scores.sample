@@ -1,4 +1,4 @@
 [
-!include(social-scoreboard-score.sample, {spaces: 2}),
-!include(social-scoreboard-score.sample, {spaces: 2})
+  !include(social-scoreboard-score.sample, {values: {home: 20}}),
+  !include(social-scoreboard-score.sample, {values: {home: 4, guest: 9}})
 ]

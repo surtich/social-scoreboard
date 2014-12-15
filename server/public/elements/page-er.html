@@ -1,0 +1,188 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<polymer-element name="page-er" attributes="perPage items">
+	<template>
+		<style>
+			:host {
+					display: block;
+			}
+
+			.pagination {
+					margin: 30px 10px;
+					text-align: center;
+			}
+			.pagination ul {
+					display: inline-block;
+					margin: 0;
+					padding: 0;
+			}
+			.pagination li {
+					display: inline;
+					line-height: 20px;
+			}
+			.pagination li.active button {
+					background: #2BA6CB;
+					color: #fff;
+			}
+			.pagination li.disabled button {
+					color: #ccc;
+					cursor: no-drop;
+			}
+			.pagination li:first-child button {
+					-webkit-border-radius: 5px 0 0 5px;
+					-moz-border-radius: 5px 0 0 5px;
+					border-radius: 5px 0 0 5px;
+			}
+			.pagination li:last-child button {
+					-webkit-border-radius: 0 5px 5px 0;
+					-moz-border-radius: 0 5px 5px 0;
+					border-radius: 0 5px 5px 0;
+			}
+			.pagination li  button {
+					background-color: #fff;
+					border: 1px solid #eeeeee;
+					color: #2BA6CB;
+					cursor: pointer;
+					float: left;
+					min-width: 40px;
+					line-height: 20px;
+					padding: 4px 12px;
+					text-decoration: none;
+					-webkit-touch-callout: none;
+					-webkit-user-select: none;
+					-khtml-user-select: none;
+					-moz-user-select: none;
+					-ms-user-select: none;
+					user-select: none;
+			}
+
+			.pagination li button {
+					color: white;
+					background: #3E50B4;
+					font-size: 1em;
+					text-transform: uppercase;
+					padding: 8px 12px;
+			}
+
+			.pagination li button:hover {
+					background: #303F9F;
+			}
+
+			.pagination li.active button {
+					background: #E91E63;
+			}
+
+			.pagination li.disabled button {
+					background: #B1B9E1;
+			}
+
+			.pagination li.active paper-button {
+					background: #E91E63;
+			}
+
+			@media (max-width: 768px) {
+					.page-number {
+							display: none;
+					}
+			}
+
+		</style>
+		<div class="pagination">
+			<ul>
+				<li class='{{currentpage === 0 ? "disabled" : ""}}'><button on-click="{{firstPage}}">First</button></li>
+				<li class='{{currentpage === 0 ? "disabled" : ""}}'>
+					<button on-click="{{prevPage}}"><< prev</button>
+				</li>
+				<span class="page-number">
+					<template repeat="{{n in pages}}">
+						<li class="{{n == currentpage ? 'active' : ''}}" data-item="{{n}}" on-click="{{setPage}}">
+							<button>{{n+1}}</button>
+						</li>
+					</template>
+
+				</span>
+
+				<li class='{{currentpage === pages.length - 1? "disabled" : ""}}'>
+					<button on-click="{{nextPage}}">next >></button>
+				</li>
+				<li class='{{currentpage === pages.length - 1? "disabled" : ""}}'><button on-click="{{lastPage}}">Last</button></li>
+			</ul>
+		</div>
+	</template>
+  <script>
+    (function () {
+        function calculatePages() {
+            var pages = Math.floor(this.items.length / this.perPage);
+            if (this.items.length % this.perPage !== 0) {
+                pages++;
+            }
+
+            this.pages.splice(pages - this.pages.length);
+
+            while (pages > this.pages.length) {
+                this.pages[this.pages.length] = this.pages.length;
+            }
+        }
+
+        function changeVisibility(page, visible) {
+            var first = page * this.perPage;
+            var last = (page + 1) * this.perPage;
+
+            for (var i = first; i < last && i < this.items.length; i++) {
+                this.items[i].visible = visible;
+            }
+        }
+
+        Polymer({
+            perPage: 0,
+            items: [],
+            pages: [],
+            ready: function () {
+                calculatePages.call(this);
+                this.currentpage = 0;
+                changeVisibility.call(this, this.currentpage, true);
+            },
+            setPage: function (event, detail, sender) {
+                this.currentpage = parseInt(sender.dataset.item, 10);
+            },
+            firstPage: function () {
+                this.currentpage = 0;
+            },
+            lastPage: function () {
+                this.currentpage = this.pages.length - 1;
+            },
+            prevPage: function () {
+                if (this.currentpage > 0) {
+                    this.currentpage--;
+                }
+            },
+            nextPage: function () {
+                if (this.currentpage < this.pages.length - 1) {
+                    this.currentpage++;
+                }
+            },
+            itemsChanged: function () {
+                calculatePages.call(this);
+                if (this.currentpage >= this.pages.length) {
+                    this.currentpage = 0;
+                } else {
+                    changeVisibility.call(this, this.currentpage, true);
+                }
+            },
+            currentpageChanged: function (oldCurrentpage, newCurrentpage) {
+                changeVisibility.call(this, oldCurrentpage, false);
+                changeVisibility.call(this, newCurrentpage, true);
+            },
+            pagesChanged: function (changes) {
+                if (!this.skipFirst) {
+                    this.skipFirst = true;
+                    return;
+                }
+                if (changes[0].addedCount > 0) {
+                    this.currentpage = this.pages.length - 1;
+                }
+            }
+        });
+    }());
+  </script>
+</polymer-element>

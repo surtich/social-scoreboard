@@ -1,3 +1,4 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="point-button.html">
 <link rel="import" href="point-setter/template.html">
 
@@ -8,23 +9,20 @@
 				font-size: 0.35em;
 				font-weight: bold;
 			}
-
-			point-button {
-				margin-right: 10px;
-			}
-
+			
+			
 			@media (max-width: 480px) {
 				point-button[points="+2"], point-button[points="+3"] {
 					display: none;
 				}
 			}
-
-			@media (max-width: 900px) {
+			
+			@media (max-width: 768px) {
 				point-setter {
 					display: none;
 				}
 			}
-
+			
     </style>
     <div layout horizontal center>
 			<point-button color="red" points="-1"></point-button>

@@ -1,0 +1,22 @@
+<polymer-element name="score-item" attributes="score">
+  <template>
+    <style>
+
+			td {
+					margin: .5eem 1em;
+					padding: 0.5em;
+			}
+
+			td:before {
+					color: #dd5;
+			}
+
+    </style>
+			<td>{{score.home}}</td>
+			<td>{{score.guest}}</td>
+	</template>
+	<script>
+    Polymer({
+    });
+	</script>
+</polymer-element>

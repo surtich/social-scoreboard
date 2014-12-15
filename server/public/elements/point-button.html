@@ -1,3 +1,4 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 <polymer-element name="point-button" attributes="points color">
@@ -33,7 +34,7 @@
 			}
     </style>
 		<div>
-			<paper-button on-tap="{{buttonTap}}" on-mousedown="{{startLongPress}}" on-mouseup="{{endLongPress}}" id="button" color="{{color}}" label="{{points}}" raisedButton></paper-button>
+			<paper-button on-tap="{{buttonTap}}" on-mousedown="{{startLongPress}}" on-mouseup="{{endLongPress}}" id="button" color="{{color}}" raisedButton>{{points}}</paper-button>
 		</div>
 
   </template>
@@ -69,7 +70,7 @@
 						timer2 = setInterval(function() {
 							fireBasketScore(self);
 						}, 100);
-					}, 600);
+					}, 400);
 				},
 				endLongPress: function() {
 					endTimers();

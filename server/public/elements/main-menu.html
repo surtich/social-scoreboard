@@ -1,56 +1,30 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
 <link rel="import" href="../bower_components/core-menu/core-menu.html">
 <link rel="import" href="../bower_components/core-item/core-item.html">
-<polymer-element name="main-menu" attributes="logged">
+
+
+
+<polymer-element name="main-menu">
   <template>
     <style>
 			:host {
-			}
-			#signin {
-				color: white;
-				background-color: rgba(0,0,170,0.40);
-				border-radius: 5px;
-			}
-
-			#signout {
-				color: white;
-				background-color: rgba(170,0,0,0.40);
-				border-radius: 5px;
-			}
-
-			#signout::shadow core-icon div {
-				border-radius: 50%;
-			}
+			}			
     </style>
-		<core-menu id="menu" icon="menu">
-			<core-item id="signin" label="Sign In" on-click="{{fireLogin}}" hidden?="{{logged}}" icon="account-circle"></core-item>
-			<core-item id="signout" src="{{photoUrl}}" label="Sign Out" on-click="{{fireLogout}}"  hidden?="{{!logged}}"></core-item>
-			<core-item id="createScoreMenuItem" on-click="{{fireCreateScore}}" hidden?="{{!logged}}" label="New Score" icon="add"></core-item>
-			<core-item id="refreshMenuItem" label="Refresh" on-click="{{fireRefresh}}" hidden?="{{!logged}}" icon="refresh"></core-item>
+		<core-menu id="menu" icon="menu" selected="0">
+			<core-item on-click="{{handleShowList}}" icon="view-list">List</core-item>
+			<core-item id="createScoreMenuItem" on-click="{{handleCreateScore}}" icon="add">New Score</core-item>
+			<core-item>Help</core-item>
+			<core-item>Sign Out</core-item>
 		</core-menu>
   </template>
   <script>
 		Polymer({
-			fireCreateScore: function() {
+			handleCreateScore: function() {
 				this.fire('score-create');
 			},
-			fireRefresh: function() {
-				this.fire('refresh');
-			},
-			fireLogin: function() {
-				this.fire('login');
-			},
-			fireLogout: function() {
-				this.fire('logout');
-			},
-			loggedChanged: function() {
-				if (this.logged) {
-					getProfile().done(function(user) {
-						this.photoUrl = user._json.picture;
-					}.bind(this)).fail(function() {
-						this.photoUrl = '';
-					}.bind(this));
-				}
+			handleShowList: function() {
+				this.fire('score-list');
 			}
 		});
   </script>

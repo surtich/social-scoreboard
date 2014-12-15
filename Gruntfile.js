@@ -12,7 +12,6 @@ module.exports = function(grunt) {
 							'server/manager/**/*.js',
 							'server/dao/**/*.js',
 							'server/util/**/*.js',
-							'server/middleware/**/*.js',
 							'server/config/**/*.js'
 						]
 			},
@@ -20,7 +19,7 @@ module.exports = function(grunt) {
 				options: {
 					extract: 'auto'
 				},
-				src: ['server/public/*.html', 'server/public/elements/**/*.html', 'server/public/elements/**/*.js', 'server/public/util/**/*.js']
+				src: ['server/public/index.html', 'server/public/elements/**/*.html', 'server/public/elements/**/*.js']
 			}
 		},
 		cucumberjs: {
@@ -50,33 +49,13 @@ module.exports = function(grunt) {
 		shell: {
 			runLocalServer: {
 				command: 'DEBUG=social-scoreboard* node server/server'
-			},
-			runLocalServerWin32: {
-				command: [
-					'set DEBUG=social-scoreboard*',
-					'node server/server'
-				].join('&&')
-			},
-			apiaryCompile: {
-				command: 'node ./server/api/apiary/apiary.preprocesor.js'
-			},
-			dredd: {
-				command: 'CONFIG=dredd dredd ./server/api/apiary/apiary.apib http://localhost:8000 --hookfiles=./server/api/apiary/hooks.js'
 			}
-		},
-		env: {
-      cucumber : {
-        CONFIG : "cucumber"
-      }
-    }
+		}
 	});
 	
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-cucumberjs');
 	grunt.loadNpmTasks('grunt-vulcanize');
-	grunt.loadNpmTasks('grunt-env');
-	grunt.loadNpmTasks('grunt-shell');
-	
 	
 	grunt.registerMultiTask('dist-client', 'Prepare client files to distribution', function() {
 		var inDir = './server/public/';
@@ -100,21 +79,10 @@ module.exports = function(grunt) {
 		});
 	});
 	
-	grunt.registerTask('server-test', ['env:cucumber', 'jshint:server', 'cucumberjs']);
+	grunt.registerTask('server-test', ['jshint:server', 'cucumberjs']);
 	
-	grunt.registerTask('apiary', ['shell:apiaryCompile']);
-	grunt.registerTask('dredd', ['shell:apiaryCompile', 'shell:dredd']);
+	grunt.loadNpmTasks('grunt-shell');
 	
 	grunt.registerTask('default', ['jshint:client', 'jshint:server', 'shell:runLocalServer']);
-	
-	grunt.registerTask('set-debug-and-run', 'Set DEBUG env var', function() {
-		if (process.platform === "win32") {
-		    grunt.task.run('shell:runLocalServerWin32');
-		} else {
-		    grunt.task.run('shell:runLocalServer');
-		}
-	});
-	
-	grunt.registerTask('default', ['jshint:client', 'jshint:server', 'set-debug-and-run']);
 
 };

@@ -1,11 +1,13 @@
 var daoScore = require('../dao/score');
 
-function create(owner, callback) {
+function create(owner, teamNames, callback) {
 
 	var score = {
 		owner: owner,
 		home: 0,
-		guest: 0
+		guest: 0,
+    homeName: teamNames.homeName,
+    guestName: teamNames.guestName
 	};
 
 	daoScore.create(score, callback);

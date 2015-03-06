@@ -5,6 +5,7 @@
 <link rel="import" href="score-board-view.html">
 <link rel="import" href="main-menu.html">
 <link rel="import" href="app-login.html">
+<link rel="import" href="new-score-dialog.html">
 
 <polymer-element name="main-app">
 	<template>
@@ -48,17 +49,24 @@
 		</style>
 		<score-board-model id="scoreModel"  logged="{{login.logged}}"></score-board-model>
 		<app-login id="login"></app-login>
-		<core-scaffold id="scaffold" responsiveWidth="1100px" mode="scroll" on-login="{{handleLogin}}" on-logout="{{handleLogout}}"  on-score-create="{{handleCreateScore}}" on-refresh="{{handleRefresh}}">
+		<core-scaffold id="scaffold" responsiveWidth="1100px" mode="scroll"
+									 on-login="{{handleLogin}}"
+									 on-logout="{{handleLogout}}"
+									 on-menu-score-create="{{handlePreCreateScore}}"
+									 on-refresh="{{handleRefresh}}"
+									 on-filter-scores="{{handleFilter}}">
 			<core-header-panel navigation flex>
 				<main-menu id="menu" logged="{{login.logged}}"></main-menu>
 			</core-header-panel>
+			<new-score-dialog id="newScoreDialog" on-create-score="{{handleCreateScore}}"></new-score-dialog>
 			<div layout horizontal wrap id="scoreboard-container" on-score-remove="{{handleRemoveScore}}">
 				<template repeat="{{model.static.scores}}">
-					<div class="container">
+					<div class="container" hidden?="{{hidden}}">
 						<score-board-view model="{{}}"></score-board-view>
 					</div>
 				</template>
 			</div>
+			
 		</core-scaffold>
   </template>
   <script>
@@ -67,9 +75,13 @@
 				this.model = this.$.scoreModel;
 				this.login = this.$.login;
 			},
-			handleCreateScore: function() {
-				this.model.newScore();
+			
+			handlePreCreateScore: function() {
+				this.$.newScoreDialog.show();
 				this.$.scaffold.closeDrawer();
+			},
+			handleCreateScore: function(event, teamNames) {
+				this.model.newScore(teamNames);
 			},
 			handleRefresh: function() {
 				this.model.refresh();
@@ -77,6 +89,9 @@
 			},
 			handleRemoveScore: function(event, detail) {
 				this.model.destroyScore(detail.score);
+			},
+			handleFilter: function(event, filter) {
+				this.model.filter(filter);
 			},
 			handleLogin: function(event, detail) {
 				this.$.login.login();

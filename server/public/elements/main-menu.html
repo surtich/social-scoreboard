@@ -7,19 +7,19 @@
 			:host {
 			}
 			#signin {
-				color: white;
-				background-color: rgba(0,0,170,0.40);
-				border-radius: 5px;
+					color: white;
+					background-color: rgba(0,0,170,0.40);
+					border-radius: 5px;
 			}
 
 			#signout {
-				color: white;
-				background-color: rgba(170,0,0,0.40);
-				border-radius: 5px;
+					color: white;
+					background-color: rgba(170,0,0,0.40);
+					border-radius: 5px;
 			}
 
 			#signout::shadow core-icon div {
-				border-radius: 50%;
+					border-radius: 50%;
 			}
     </style>
 		<core-menu id="menu" icon="menu">
@@ -28,30 +28,40 @@
 			<core-item id="createScoreMenuItem" on-click="{{fireCreateScore}}" hidden?="{{!logged}}" label="New Score" icon="add"></core-item>
 			<core-item id="refreshMenuItem" label="Refresh" on-click="{{fireRefresh}}" hidden?="{{!logged}}" icon="refresh"></core-item>
 		</core-menu>
+		<core-menu id="filter" icon="menu" selected="0">
+			<core-item id="allScoresMenuItem" on-click="{{fireFilterAll}}" hidden?="{{!logged}}" label="All Scores" icon="select-all"></core-item>
+			<core-item id="myScoresMenuItem" on-click="{{fireFilterMine}}" hidden?="{{!logged}}" label="My Scores" icon="home"></core-item>
+		</core-menu>
   </template>
   <script>
-		Polymer({
-			fireCreateScore: function() {
-				this.fire('score-create');
-			},
-			fireRefresh: function() {
-				this.fire('refresh');
-			},
-			fireLogin: function() {
-				this.fire('login');
-			},
-			fireLogout: function() {
-				this.fire('logout');
-			},
-			loggedChanged: function() {
-				if (this.logged) {
-					getProfile().done(function(user) {
-						this.photoUrl = user._json.picture;
-					}.bind(this)).fail(function() {
-						this.photoUrl = '';
-					}.bind(this));
-				}
-			}
-		});
+    Polymer({      
+      fireCreateScore: function () {
+        this.fire('menu-score-create');
+      },
+      fireFilterMine: function () {
+        this.fire('filter-scores', 'mine');
+      },
+      fireFilterAll: function () {
+        this.fire('filter-scores', 'all');
+      },
+      fireRefresh: function () {
+        this.fire('refresh');
+      },
+      fireLogin: function () {
+        this.fire('login');
+      },
+      fireLogout: function () {
+        this.fire('logout');
+      },
+      loggedChanged: function () {
+        if (this.logged) {
+          getProfile().done(function (user) {
+            this.photoUrl = user._json.picture;
+          }.bind(this)).fail(function () {
+            this.photoUrl = '';
+          }.bind(this));
+        }
+      }
+    });
   </script>
 </polymer-element>

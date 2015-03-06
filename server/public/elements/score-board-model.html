@@ -2,98 +2,125 @@
 	<template>
 	</template>
 	<script>
-		(function() {
-			var base = '/score';
-
-			var static = {
-				scores: null
-			};
-
-			function refresh() {
-				doAjax({url: base}, function(scores) {
-					static.scores = scores;
-				});
-			}
+    (function () {
+      var base = '/score';
+      var static = {
+        scores: null
+      };
 			
-			socket.addEvent(function() {
-				addListeners.call(this, static);
-			});
+			var state = 'all';
 
-			function addListeners(static) {
-				this.on('err', function(msg) {
-					showMsg(msg);
-				});
+      function setVisible(scores, state) {
+        getProfile().done(function (profile) {
+          var userId = profile.id;
+          scores.forEach(function (score) {
+            switch (state) {
+              case 'all':
+                score.hidden = false;
+                break;
+              case 'mine':
+                score.hidden = userId !== score.owner;
+                break;
+              default:
+                score.hidden = true;
+            }
+          });
+        }).fail(function () {
 
-				this.on('scoreCreated', function(score) {
-          var exists = static.scores.some(function(itemScore) {
-			      return score._id === itemScore._id;
-			    });
-				  if (!exists) {
-  				  static.scores.push(score);
-	  				showMsg('Score created');
-	  			}
-				});
+        });
+      }
 
-				this.on('scoreDestroyed', function(scoreId) {
-					for (var i = 0; i < static.scores.length; i++) {
-						if (scoreId === static.scores[i]._id) {
-							static.scores.splice(i, 1);
-							showMsg('Score [' + scoreId + '] destroyed');
-						}
-					}
-				});
+      function refresh() {
+        doAjax({url: base}, function (scores) {
+          static.scores = scores;
+					setVisible(static.scores, state);
+        });
+      }
 
-				this.on('scoreSetted', function(score) {
-					for (var i = 0; i < static.scores.length; i++) {
-						if (score._id === static.scores[i]._id) {
-							static.scores[i].home = score.home;
-							static.scores[i].guest = score.guest;
-						}
-					}
-				});
-			}
+      socket.addEvent(function () {
+        addListeners.call(this, static);
+      });
 
+      function addListeners(static) {
+        this.on('err', function (msg) {
+          showMsg(msg);
+        });
 
-			Polymer('score-board-model', {
-				ready: function() {
-					this.static = static;
-				},
-				newScore: function() {
-					doAjax({url: base, type: 'POST'}, function(data) {
-						this.static.scores.push(data);
-					}.bind(this));
-				},
-				destroyScore: function(score) {
-					doAjax({type: 'DELETE', url: base + '/' + score._id, dataType: 'text'}, function(data) {
-						var i = this.static.scores.indexOf(score);
-						if (i >= 0) {
-							this.static.scores.splice(i, 1);
-						}
-					}.bind(this));
-				},
-				setScore: function(score, team, points) {
-					var url = base + '/' + score._id + '/set';
-					var data = {
-						team: team,
-						points: points
-					};
-					doAjax({type: 'PUT', url: url, data: JSON.stringify(data)}, function(result) {
-						score[team] = points;
-					}.bind(this));
-				},
-				refresh: function() {
-					refresh();
-				},
-				loggedChanged: function() {
-					if (this.logged) {
-						if (!static.scores) {
-							refresh();
-						}
-					} else {
-						static.scores = null;
-					}
-				}
-			});
-		}());
+        this.on('scoreCreated', function (score) {
+          var exists = static.scores.some(function (itemScore) {
+            return score._id === itemScore._id;
+          });
+          if (!exists) {
+            static.scores.push(score);
+            showMsg('Score created');
+          }
+        });
+
+        this.on('scoreDestroyed', function (scoreId) {
+          for (var i = 0; i < static.scores.length; i++) {
+            if (scoreId === static.scores[i]._id) {
+              static.scores.splice(i, 1);
+              showMsg('Score [' + scoreId + '] destroyed');
+            }
+          }
+        });
+
+        this.on('scoreSetted', function (score) {
+          for (var i = 0; i < static.scores.length; i++) {
+            if (score._id === static.scores[i]._id) {
+              static.scores[i].home = score.home;
+              static.scores[i].guest = score.guest;
+            }
+          }
+        });
+      }
+      Polymer('score-board-model', {
+        ready: function () {
+          this.static = static;
+        },
+        newScore: function (teamNames) {
+          doAjax({url: base, type: 'POST', data: JSON.stringify(teamNames)}, function (data) {
+            this.static.scores.push(data);
+          }.bind(this));
+        },
+        destroyScore: function (score) {
+          doAjax({type: 'DELETE', url: base + '/' + score._id, dataType: 'text'}, function (data) {
+            var i = this.static.scores.indexOf(score);
+            if (i >= 0) {
+              this.static.scores.splice(i, 1);
+            }
+          }.bind(this));
+        },
+        setScore: function (score, team, points) {
+          var url = base + '/' + score._id + '/set';
+          var data = {
+            team: team,
+            points: points
+          };
+          doAjax({type: 'PUT', url: url, data: JSON.stringify(data)}, function (result) {
+            score[team] = points;
+          }.bind(this));
+        },
+        refresh: function () {
+          refresh();
+        },
+        loggedChanged: function () {
+          if (this.logged) {
+            if (!static.scores) {
+              refresh();
+            }
+          } else {
+            static.scores = null;
+          }
+        },
+        filter: function (newState) {
+          state = newState;
+					setVisible(this.static.scores, state);
+        },
+        stateChanged: function () {
+          setVisible.call(this);
+        }
+      });
+    }());
   </script>
 </polymer-element>

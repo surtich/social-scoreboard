@@ -30,8 +30,8 @@
     </style>
 		<score-board-model id="scoreModel"></score-board-model>
 		<div layout horizontal around-justified on-score-updated="{{handleScoreUpdated}}">
-			<score-team id="home"  isMine="{{isMine}}" teamName="home" teamScore="{{model.home}}"></score-team>
-			<score-team id="guest" isMine="{{isMine}}" teamName="guest" teamScore="{{model.guest}}"></score-team>
+			<score-team id="home"  isMine="{{isMine}}" teamName="home" teamRealName="{{model.homeName}}" teamScore="{{model.home}}"></score-team>
+			<score-team id="guest" isMine="{{isMine}}" teamName="guest" teamRealName="{{model.guestName}}" teamScore="{{model.guest}}"></score-team>
 		</div>
 
     <core-icon-button

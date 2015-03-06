@@ -1,0 +1,43 @@
+<link rel="import" href="../bower_components/paper-input/paper-input-decorator.html">
+
+<polymer-element name="input-color" attributes="label color pattern error">
+  <template>
+		<style>
+			paper-input-decorator {
+					color: {{color}}
+			}
+			paper-input-decorator /deep/ .focused-underline {
+					background-color: {{color}};
+			}
+
+    </style>
+    <paper-input-decorator id="paper-input-decorator" label="{{label}}"  error="{{error}}">
+			<input id="input" is="core-input">
+		</paper-input-decorator>
+  </template>
+  <script>
+    (function () {
+      function validate(input) {
+				input.parentNode.isInvalid = input.value.match(new RegExp(this.pattern)) === null;
+				this.isInvalid = input.parentNode.isInvalid;
+			}
+      Polymer({
+        domReady: function () {
+					this.validateInput = validate.bind(this, this.$.input);
+          this.$.input.addEventListener('keyup', function () {
+						this.validateInput();
+          }.bind(this));
+					
+					this.validateInput();
+        },
+				getValue: function() {
+					return this.$.input.value;
+				},
+				clean: function() {
+					this.$.input.value = '';
+					this.validateInput();
+				}
+      });
+    }());
+  </script>
+</polymer-element>

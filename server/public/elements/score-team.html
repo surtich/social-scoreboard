@@ -1,6 +1,6 @@
 <link rel="import" href="score-controls.html">
 
-<polymer-element name="score-team" attributes="isMine teamName teamScore">
+<polymer-element name="score-team" attributes="isMine teamName teamRealName teamScore">
   <template>
     <style>
 			.team-name {
@@ -14,13 +14,13 @@
     </style>
     <div layout vertical center on-basket-scored="{{handleBasket}}" on-score-setted="{{handleScoreSetted}}">
 			<div class="team-name">
-				{{teamName}}
+				{{teamRealName}}
 			</div>
 			<div class="team-score">
 				{{teamScore}}
 			</div>
 			<template if="{{isMine}}">
-				<score-controls id="controls" teamName="{{teamName}}"></score-controls>
+				<score-controls id="controls" teamName="{{teamRealName}}"></score-controls>
 			</template>
     </div>
   </template>

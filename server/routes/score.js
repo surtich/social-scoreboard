@@ -18,7 +18,7 @@ function worker(io) {
 	/* END ROUTES */
 
 	function createScore(req, res, next) {
-		scoreManager.create(req.user.id, function(err, result) {
+		scoreManager.create(req.user.id, req.body, function(err, result) {
 			if (err) {
 				return next(err);
 			}

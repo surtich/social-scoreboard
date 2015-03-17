@@ -1,0 +1,88 @@
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+
+<polymer-element name="stats-table" attributes="scores">
+  <template>
+    <style>
+			.score-table {
+					margin: 0px auto;
+					background: #3E50B4;
+					color: #fff;
+					border-radius: .4em;
+					overflow: hidden;
+					font-size: 2em;
+					text-align: center;
+			}
+			.score-table th, .score-table td {
+					margin: .5em 1em;
+					padding: 0.5em;
+			}
+			.score-table caption {
+					color: #000;
+			}
+			.score-table th, .score-table td:before {
+					color: #dd5;
+			}
+			.score-table tr:hover:nth-of-type(n + 2) {
+					background: #E91E63;
+					cursor: pointer;
+					border-left-color: #E91E63;
+					border-right-color: #E91E63;
+			}
+
+    </style>
+		<table class="score-table">
+			<caption>Stats</caption>
+			<tr>
+				<th>Team
+				<th>Wins
+			</tr>
+			<template repeat="{{stat in stats}}">
+				<tr>
+					<td>{{stat.team}}</td>
+					<td>{{stat.wins}}</td>
+				</tr>
+			</template>
+		</table>
+	</template>
+	<script>
+    (function () {
+			function calculate(scores) {
+				if (!scores) {
+					return [];
+				}
+				var freq = scores.filter(function(score) {
+					return score.state === 'closed';
+				}).reduce(function(stats, score) {
+					var teams = stats[0].slice()
+							.concat(stats[0].indexOf(score.homeName) === -1 ? score.homeName : [])
+							.concat(stats[0].indexOf(score.guestName) === -1 ? score.guestName : []);
+					var winner = score.home > score.guest ? score.homeName : score.guestName;
+					var posWinner = teams.indexOf(winner);
+					var wins = stats[1];
+					wins[posWinner] = (wins[posWinner] || []).concat(1);
+					return [ teams, wins];
+				}, [[], []]);
+				
+				var teams  = freq[0];
+				var wins = freq[1];
+				
+				return teams.map(function(team, index) {
+					return {
+						team: team,
+						wins: wins[index] ? wins[index].length : 0
+					};
+				}).sort(function(statA, statB) {
+					return statB.wins - statA.wins;
+				});
+			}
+      Polymer({
+				ready: function() {
+					this.calculate();
+				},
+				calculate: function() {
+					this.stats = calculate(this.scores);
+				}
+      });
+    }());
+	</script>
+</polymer-element>

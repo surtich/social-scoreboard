@@ -15,7 +15,6 @@ function showMsg(msg) {
 
 function doAjax(options, success, error) {
 	var deferred = $.Deferred();
-	var self = this;
 	options.type = options.type || 'GET';
 	options.url = options.url || '';
 	if (socket.id()) {

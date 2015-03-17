@@ -1,6 +1,7 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 
-<polymer-element name="point-button" attributes="points color">
+<polymer-element name="point-button" attributes="points color disabled">
   <template>
     <style>
 			:host {
@@ -31,9 +32,13 @@
 			#button[color="red"]:hover {
 				background: red;
 			}
+			
+			.disabled {
+				background: grey !important;
+			}
     </style>
 		<div>
-			<paper-button on-tap="{{buttonTap}}" on-mousedown="{{startLongPress}}" on-mouseup="{{endLongPress}}" id="button" color="{{color}}" label="{{points}}" raisedButton></paper-button>
+			<paper-button disabled?="{{disabled}}" on-tap="{{buttonTap}}" on-mousedown="{{startLongPress}}" on-mouseup="{{endLongPress}}" id="button" color="{{color}}" raisedButton>{{points}}</paper-button>
 		</div>
 
   </template>
@@ -69,10 +74,17 @@
 						timer2 = setInterval(function() {
 							fireBasketScore(self);
 						}, 100);
-					}, 600);
+					}, 400);
 				},
 				endLongPress: function() {
 					endTimers();
+				},
+				disabledChanged: function() {
+					if (this.disabled) {
+						$(this.$.button).addClass('disabled');
+					} else {
+						$(this.$.button).removeClass('disabled');
+					}
 				}
 			});
 		}());

@@ -12,13 +12,14 @@ function worker(io) {
 	router.post('/', createScore);
 	router.put('/:scoreId/basket', ensureOwner, scoreBasket);
 	router.put('/:scoreId/set', ensureOwner, setScore);
+  router.put('/:scoreId/state', ensureOwner, setState);
 	router.get('/:scoreId', getScore);
 	router.delete('/:scoreId', ensureOwner, delScore);
 	router.get('/', getAll);
 	/* END ROUTES */
 
 	function createScore(req, res, next) {
-		scoreManager.create(req.user.id, function(err, result) {
+		scoreManager.create(req.user.id, req.body, function(err, result) {
 			if (err) {
 				return next(err);
 			}
@@ -75,6 +76,25 @@ function worker(io) {
 	function setScore(req, res, next) {
 		updateScore(scoreManager.setScoreTeam, req, res, next);
 	}
+
+  function setState(req, res, next) {
+		var scoreId = req.params.scoreId;
+		var state = req.body.state;
+
+		scoreManager.setScoreState(scoreId, state, function(err, newScore) {
+			if (err) {
+				return next(err);
+			}
+			if (!newScore) {
+				next(new Error(new Error(scoreId + ' not exists')));
+			} else {
+				debug('change score state to ' + state + '[' + scoreId + ']');
+				res.json(newScore);
+				io.emitOthers('scoreSetState', newScore, req.query.socketId);
+			}
+		});
+	}
+
 
 	function updateScore(fn, req, res, next) {
 		var scoreId = req.params.scoreId;

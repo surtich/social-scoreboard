@@ -1,0 +1,97 @@
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+
+<polymer-element name="toggle-score" attributes="state isMine">
+  <template>
+    <style>
+			#toggle-label {
+					margin-right: 20px;
+					color: white;
+			}
+
+			#toggle-label.red {
+					color: red;
+			}
+
+			#toggle-label.green {
+					color: green;
+			}
+
+			paper-toggle-button::shadow [checked] .toggle-ink {
+					color: green;
+			}
+
+			paper-toggle-button::shadow  [checked] .toggle-bar {
+					background-color: green;
+			}
+
+
+			paper-toggle-button::shadow  [checked] .toggle-button {
+					background-color: green;
+			}
+
+			paper-toggle-button.red::shadow .toggle-ink {
+					color: red;
+			}
+
+			paper-toggle-button.red::shadow .toggle-bar {
+					background-color: red;
+			}
+
+			paper-toggle-button.red::shadow .toggle-button {
+					background-color: red;
+			}
+
+			@media (max-width: 700px) {
+					#toggle-label {
+							display: none;
+					}
+			}
+    </style>
+		<div center horizontal layout>
+			<div flex id="toggle-label">Open</div>
+			<paper-toggle-button id="toggle-button"></paper-toggle-button>
+		</div>
+	</template>
+	<script>
+    (function () {
+      function loadState() {
+        this.$['toggle-label'].innerHTML = this.state;
+        switch (this.state) {
+          case 'disabled':
+            this.$['toggle-button'].checked = false;
+            this.$['toggle-button'].className = 'disabled';
+            this.$['toggle-label'].className = 'disabled';
+            break
+          case 'opened' :
+            this.$['toggle-button'].checked = true;
+            this.$['toggle-button'].className = 'green';
+            this.$['toggle-label'].className = 'green';
+            break
+          case 'closed' :
+            this.$['toggle-button'].checked = false;
+            this.$['toggle-button'].disabled = true;
+            this.$['toggle-button'].className = 'red';
+            this.$['toggle-label'].className = 'red';
+            break
+        }
+      }
+      Polymer({
+        ready: function () {
+          var that = this;
+          this.$['toggle-button'].addEventListener("change", function (event) {
+            that.fire("score-change-state", event.target.checked ? 'opened' : 'closed');
+          });
+          if (!this.isMine) {
+            this.$['toggle-button'].disabled = true;
+          }
+        },
+        isMineChanged: function () {
+          this.$['toggle-button'].disabled = !this.isMine;
+        },
+        stateChanged: function () {
+          loadState.call(this);
+        }
+      });
+    }());
+	</script>
+</polymer-element>

@@ -1,65 +1,75 @@
 <link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+
 <link rel="import" href="score-board-model.html">
 <link rel="import" href="score-team.html">
+<link rel="import" href="toggle-score.html">
 
 <polymer-element name="score-board-view" attributes="model">
   <template>
     <style>
 			:host {
-				display: block;
-				position: relative;
-				padding: 10px;
-				width: 100%;
-				font-size: 2em;
-				font-family: LED;
-				font-weight: 300;
-				border-radius: 5px;
-				background: #7d7e7d;
-				background: linear-gradient(to right,  #7d7e7d 0%,#0e0e0e 100%);	
+					display: block;
+					position: relative;
+					padding: 10px;
+					width: 100%;
+					font-size: 2em;
+					font-family: LED;
+					font-weight: 300;
+					border-radius: 5px;
+					background: #7d7e7d;
+					background: linear-gradient(to right,  #7d7e7d 0%,#0e0e0e 100%);	
 			}
 			core-icon-button {
-				position: absolute;
-				top: 3px;
-				right: 3px;
-				color: gray;
+					position: absolute;
+					top: 3px;
+					right: 3px;
+					color: gray;
 			}
 			core-icon-button:hover {
-				position: absolute;
-				color: red;
+					position: absolute;
+					color: red;
+			}
+			toggle-score {
+					margin-top: 50px;
 			}
     </style>
 		<score-board-model id="scoreModel"></score-board-model>
 		<div layout horizontal around-justified on-score-updated="{{handleScoreUpdated}}">
-			<score-team id="home"  isMine="{{isMine}}" teamName="home" teamScore="{{model.home}}"></score-team>
-			<score-team id="guest" isMine="{{isMine}}" teamName="guest" teamScore="{{model.guest}}"></score-team>
+			<score-team id="home"  isMine="{{isMine}}" isOpened="{{model.state == 'opened'}}" teamName="home" teamRealName="{{model.homeName}}" teamScore="{{model.home}}"></score-team>
+			<toggle-score isMine="{{isMine}}" on-score-change-state="{{handleChangeStateScore}}" state="{{model.state}}"></toggle-score>
+			<score-team id="guest" isMine="{{isMine}}" isOpened="{{model.state == 'opened'}}" teamName="guest" teamRealName="{{model.guestName}}" teamScore="{{model.guest}}"></score-team>
 		</div>
 
     <core-icon-button
-      id="favicon"
-      icon="delete"
-      on-tap="{{handleRemoveScore}}" hidden?="{{!isMine}}">
-    </core-icon-button>
+				id="favicon"
+				icon="delete"
+				on-tap="{{handleRemoveScore}}" hidden?="{{!isMine}}">
+	</core-icon-button>
 
-  </template>
-  <script>
-		Polymer({
-			ready: function() {
-				this.scrollIntoView();
-				getProfile().done(function(profile) {
-					var userId = profile.id;
-					this.isMine = (userId === this.model.owner);
-				}.bind(this)).fail(function() {
-					this.isMine = false;
-				}.bind(this));
-			},
-			handleRemoveScore: function() {
-				this.fire('score-remove', {score: this.model});
-			},
-			handleScoreUpdated: function(event, detail, sender) {
-				var team = detail.team;
-				var points = detail.points;
-				this.$.scoreModel.setScore(this.model, team, points);
-			}
-		});
-  </script>
+</template>
+<script>
+  Polymer({
+    ready: function () {
+      this.scrollIntoView();
+      getProfile().done(function (profile) {
+        var userId = profile.id;
+        this.isMine = (userId === this.model.owner);
+      }.bind(this)).fail(function () {
+        this.isMine = false;
+      }.bind(this));
+    },
+    handleRemoveScore: function () {
+      this.fire('score-remove', {score: this.model});
+    },
+    handleScoreUpdated: function (event, detail, sender) {
+      var team = detail.team;
+      var points = detail.points;
+      this.$.scoreModel.setScore(this.model, team, points);
+    },
+		handleChangeStateScore: function(event, state) {
+			this.$.scoreModel.setState(this.model, state);
+		}
+  });
+</script>
 </polymer-element>

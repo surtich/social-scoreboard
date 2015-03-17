@@ -1,11 +1,14 @@
 var daoScore = require('../dao/score');
 
-function create(owner, callback) {
+function create(owner, teamNames, callback) {
 
 	var score = {
 		owner: owner,
 		home: 0,
-		guest: 0
+		guest: 0,
+    homeName: teamNames.homeName,
+    guestName: teamNames.guestName,
+    state: 'disabled'
 	};
 
 	daoScore.create(score, callback);
@@ -36,6 +39,15 @@ function setScoreTeam(scoreId, team, points, callback) {
 	} else {
 		callback('Invalid points[' + points + '] or team[' + team + ']');
 	}
+}
+
+function setScoreState(scoreId, state, callback) {
+	
+	var update = {
+		$set: { state: state }
+	};
+  
+  daoScore.updateScore(scoreId, update, callback);
 }
 
 function scoreBasket(scoreId, team, points, callback) {
@@ -78,5 +90,6 @@ module.exports = {
 	getAll: getAll,
 	delScore: delScore,
 	setScoreTeam: setScoreTeam,
+  setScoreState: setScoreState,
 	scoreBasket: scoreBasket
 };

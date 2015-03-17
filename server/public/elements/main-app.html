@@ -5,6 +5,8 @@
 <link rel="import" href="score-board-view.html">
 <link rel="import" href="main-menu.html">
 <link rel="import" href="app-login.html">
+<link rel="import" href="new-score-dialog.html">
+<link rel="import" href="stats-table.html">
 
 <polymer-element name="main-app">
 	<template>
@@ -14,79 +16,110 @@
 			}
 
 			core-scaffold /deep/ #topBar {
-				background-image: url("../img/banner.jpg");
-				background-repeat: no-repeat;
-				background-size: cover;
+					background-image: url("../img/banner.jpg");
+					background-repeat: no-repeat;
+					background-size: cover;
 
 			}
 
 			core-header-panel {
-				height: 100%;
-				overflow: auto;
-				-webkit-overflow-scrolling: touch; 
-				background: #ffffff;
-				background: linear-gradient(to right,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+					height: 100%;
+					overflow: auto;
+					-webkit-overflow-scrolling: touch; 
+					background: #ffffff;
+					background: linear-gradient(to right,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
 			}
 
 			core-toolbar {
-				background: #03a9f4;
-				color: white;
+					background: #03a9f4;
+					color: white;
 			}
 
 
 			.container {
-				min-width: 400px;
-				margin: 2em;
+					min-width: 400px;
+					margin: 2em;
 			}
 
 			@media (max-width: 900px) {
-				.container {
-					min-width: 85%;
-					margin: 5%;
-				}
+					.container {
+							min-width: 85%;
+							margin: 5%;
+					}
 			}
 		</style>
 		<score-board-model id="scoreModel"  logged="{{login.logged}}"></score-board-model>
 		<app-login id="login"></app-login>
-		<core-scaffold id="scaffold" responsiveWidth="1100px" mode="scroll" on-login="{{handleLogin}}" on-logout="{{handleLogout}}"  on-score-create="{{handleCreateScore}}" on-refresh="{{handleRefresh}}">
+		<core-scaffold id="scaffold" responsiveWidth="1100px" mode="scroll"
+									 on-login="{{handleLogin}}"
+									 on-logout="{{handleLogout}}"
+									 on-stats="{{handleStats}}"
+									 on-menu-score-create="{{handlePreCreateScore}}"
+									 on-refresh="{{handleRefresh}}"
+									 on-filter-scores="{{handleFilter}}">
 			<core-header-panel navigation flex>
 				<main-menu id="menu" logged="{{login.logged}}"></main-menu>
 			</core-header-panel>
-			<div layout horizontal wrap id="scoreboard-container" on-score-remove="{{handleRemoveScore}}">
-				<template repeat="{{model.static.scores}}">
-					<div class="container">
-						<score-board-view model="{{}}"></score-board-view>
-					</div>
-				</template>
+			<new-score-dialog id="newScoreDialog" on-create-score="{{handleCreateScore}}"></new-score-dialog>
+			<div id="page1">
+					 <div layout horizontal wrap id="scoreboard-container" on-score-remove="{{handleRemoveScore}}">
+					<template repeat="{{model.static.scores}}">
+						<div class="container" hidden?="{{hidden}}">
+								 <score-board-view model="{{}}"></score-board-view>
+						</div>
+					</template>
+				</div>
 			</div>
+			<div id="page2">
+				<stats-table id="stats" scores="{{model.static.scores}}"></stats-table>
+			</div>
+
 		</core-scaffold>
   </template>
   <script>
-		Polymer({
-			ready: function() {
-				this.model = this.$.scoreModel;
-				this.login = this.$.login;
-			},
-			handleCreateScore: function() {
-				this.model.newScore();
-				this.$.scaffold.closeDrawer();
-			},
-			handleRefresh: function() {
-				this.model.refresh();
-				this.$.scaffold.closeDrawer();
-			},
-			handleRemoveScore: function(event, detail) {
-				this.model.destroyScore(detail.score);
-			},
-			handleLogin: function(event, detail) {
-				this.$.login.login();
-				this.$.scaffold.closeDrawer();
-			},
-			handleLogout: function(event, detail) {
-				this.$.login.logout();
-				this.$.scaffold.closeDrawer();
-			}
-			
-		});
+    Polymer({
+      ready: function () {
+        this.model = this.$.scoreModel;
+        this.login = this.$.login;
+				$(this.$.page1).show();
+				$(this.$.page2).hide();
+      },
+      handlePreCreateScore: function () {
+        this.$.newScoreDialog.show();
+        this.$.scaffold.closeDrawer();
+      },
+      handleCreateScore: function (event, teamNames) {
+        this.model.newScore(teamNames);
+				$(this.$.page1).show();
+				$(this.$.page2).hide();
+      },
+      handleRefresh: function () {
+        this.model.refresh();
+				this.$.stats.calculate();
+        this.$.scaffold.closeDrawer();
+      },
+      handleRemoveScore: function (event, detail) {
+        this.model.destroyScore(detail.score);
+      },
+      handleFilter: function (event, filter) {
+        this.model.filter(filter);
+				$(this.$.page1).show();
+				$(this.$.page2).hide();
+      },
+      handleLogin: function (event, detail) {
+        this.$.login.login();
+        this.$.scaffold.closeDrawer();
+      },
+      handleLogout: function (event, detail) {
+        this.$.login.logout();
+        this.$.scaffold.closeDrawer();
+      },
+			handleStats: function (event, detail) {
+				this.$.stats.calculate();
+        $(this.$.page2).show();
+				$(this.$.page1).hide();
+      }
+
+    });
   </script>
 </polymer-element>

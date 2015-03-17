@@ -1,7 +1,7 @@
 <link rel="import" href="point-button.html">
 <link rel="import" href="point-setter/template.html">
 
-<polymer-element name="score-controls" attributes="teamName">
+<polymer-element name="score-controls" attributes="teamName isEnabled">
   <template>
     <style>
 			:host {
@@ -13,7 +13,7 @@
 				margin-right: 10px;
 			}
 
-			@media (max-width: 480px) {
+			@media (max-width: 700px) {
 				point-button[points="+2"], point-button[points="+3"] {
 					display: none;
 				}
@@ -27,11 +27,11 @@
 
     </style>
     <div layout horizontal center>
-			<point-button color="red" points="-1"></point-button>
-			<point-button points="+1"></point-button>
-			<point-button points="+2"></point-button>
-			<point-button points="+3"></point-button>
-			<point-setter teamName="{{teamName}}"></point-setter>
+			<point-button color="red" points="-1" disabled="{{!isEnabled}}"></point-button>
+			<point-button points="+1" disabled="{{!isEnabled}}"></point-button>
+			<point-button points="+2" disabled="{{!isEnabled}}"></point-button>
+			<point-button points="+3" disabled="{{!isEnabled}}"></point-button>
+			<point-setter teamName="{{teamName}}" disabled="{{!isEnabled}}"></point-setter>
     </div>
   </template>
   <script>
